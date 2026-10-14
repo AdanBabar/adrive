@@ -51,6 +51,14 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 .cta{height:52px;border:0;border-radius:6px;background:var(--accent);color:#1a0d04;font:800 italic 26px var(--display);letter-spacing:.06em;text-transform:uppercase}
 .cta:hover{background:#ff9150}
 
+#musicbar{position:absolute;top:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:5px 6px;border-radius:26px;pointer-events:auto;white-space:nowrap}
+#musicbar span{min-width:120px;text-align:center;font:600 16px var(--display);letter-spacing:.1em;text-transform:uppercase}
+#musicbar button{height:36px;min-width:36px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.07);font-size:20px;padding:0 10px;line-height:1}
+#mPrev,#mNext{display:none!important}
+#musicbar span{min-width:0!important;padding:0 10px}
+#musicbar #mOff{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-left:4px}
+#musicbar #mOff[aria-pressed="false"]{opacity:.55}
+#tapmusic{position:absolute;top:66px;left:50%;transform:translateX(-50%);padding:8px 16px;border-radius:20px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--text);pointer-events:none;white-space:nowrap}
 #credit{position:absolute;left:0;right:0;bottom:7px;text-align:center;font-size:12px;letter-spacing:.06em;color:rgba(255,255,255,.72);text-shadow:0 1px 6px rgba(0,0,0,.8);pointer-events:none}
 .short #credit{right:auto;left:18px;bottom:14px;text-align:left;max-width:calc(100% - 360px)}
 #hud{position:fixed;inset:0;pointer-events:none}
@@ -145,6 +153,8 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
     <div id="sw" role="group" aria-label="Paint colour"></div>
     <button class="cta" id="go">Start driving</button>
   </div>
+  <div id="musicbar" class="glass"><button id="mPrev" aria-label="Previous track">&#8249;</button><span id="mName">Drift Phonk</span><button id="mNext" aria-label="Next track">&#8250;</button><button id="mOff" aria-pressed="true">Music on</button></div>
+  <div id="tapmusic" class="glass">Tap anywhere to play music</div>
   <div id="credit">Developed by Aden Babar &middot; &copy; 2026 ADrive. All rights reserved.</div>
 </section>
 
@@ -164,6 +174,7 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
     <button class="glass" id="bCam">Change camera</button>
     <button class="glass" id="bQual">Graphics: High</button>
     <button class="glass" id="bMute">Sound: On</button>
+    <button class="glass" id="bMusic">Music: On</button>
   </div>
 </section>
 
@@ -504,9 +515,73 @@ aiPlace();
 let AC,eo1,eo2,eg,ef,muted=false;
 function audioStart(){if(AC){if(AC.state==='suspended')AC.resume();return;}
   try{AC=new(window.AudioContext||window.webkitAudioContext)();eo1=AC.createOscillator();eo1.type='sawtooth';eo2=AC.createOscillator();eo2.type='square';
-  ef=AC.createBiquadFilter();ef.type='lowpass';ef.frequency.value=500;eg=AC.createGain();eg.gain.value=0;eo1.connect(ef);eo2.connect(ef);ef.connect(eg);eg.connect(AC.destination);eo1.start();eo2.start();}catch(e){AC=null;}}
+  ef=AC.createBiquadFilter();ef.type='lowpass';ef.frequency.value=500;eg=AC.createGain();eg.gain.value=0;eo1.connect(ef);eo2.connect(ef);ef.connect(eg);eg.connect(AC.destination);eo1.start();eo2.start();musicInit();}catch(e){AC=null;}}
 function audioUpdate(rpm,th){if(!AC)return;const t=AC.currentTime,f=36+rpm*150;eo1.frequency.setTargetAtTime(f,t,.05);eo2.frequency.setTargetAtTime(f*.5,t,.05);
   ef.frequency.setTargetAtTime(380+rpm*1500+th*400,t,.08);eg.gain.setTargetAtTime(S.mode==='drive'&&!muted?.035+.05*th:0,t,.1);}
+
+/* ---------- phonk music (original, generated live, 3 tracks) ---------- */
+const TRACKS=[
+ {name:'ADrive Theme',bpm:128,bass:[41,37,44,39],pad:[[53,56,60],[49,53,56],[56,60,63],[51,55,58]],bs:[0,3,6,8,11,14],bd:[2.5,1,1.5,2,1,1.5],bo:{3:12,6:7,11:12,14:3},hat:'pop',
+  kick:(s,b)=>s%4===0,bellBase:698.46,arp:true,stab:true,
+  bell:[{0:0,3:0,6:3,8:0,10:-2,14:-4},{0:-4,3:-4,6:-2,8:0,11:-2,14:-4},{0:3,3:3,6:5,8:3,10:0,14:-2},{0:-2,3:-2,6:-4,8:0,11:-2,13:-4,15:-7}]}
+];
+let TI=0;try{TI=Math.max(0,Math.min(TRACKS.length-1,+localStorage.getItem('adrive_track')||0));}catch(e){}
+let TK=TRACKS[TI],SP=60/TK.bpm/4;
+const MUS={active:false,on:true,step:0,next:0,out:null,bus:null,send:null,noise:null,timer:null,file:null,dl:null};
+const mtof=n=>440*Math.pow(2,(n-69)/12);
+function shaper(k){const n=1024,c=new Float32Array(n);for(let i=0;i<n;i++){c[i]=Math.tanh((i/(n/2)-1)*k);}const s=AC.createWaveShaper();s.curve=c;return s;}
+function env(g,t,a,peak,d){g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+a+d);}
+function mOut(node,send,mel){node.connect(mel?MUS.mel:MUS.bus);if(send){const s=AC.createGain();s.gain.value=send;node.connect(s);s.connect(MUS.send);}}
+function setTrack(i){TI=(i+TRACKS.length)%TRACKS.length;TK=TRACKS[TI];SP=60/TK.bpm/4;MUS.step=0;if(MUS.dl)MUS.dl.delayTime.value=SP*3;$('mName').textContent=TK.name;try{localStorage.setItem('adrive_track',TI);}catch(e){}}
+function toggleMusic(){MUS.on=!MUS.on;$('bMusic').textContent='Music: '+(MUS.on?'On':'Off');$('mOff').textContent=MUS.on?'Music on':'Music off';$('mOff').setAttribute('aria-pressed',MUS.on?'true':'false');applyMusic();}
+function musicInit(){
+  if(!AC||MUS.bus)return;
+  const comp=AC.createDynamicsCompressor(),out=AC.createGain();out.gain.value=.45;
+  MUS.bus=AC.createGain();MUS.send=AC.createGain();MUS.mel=AC.createGain();MUS.mel.connect(MUS.bus);
+  const dl=AC.createDelay(1),fb=AC.createGain(),lp=AC.createBiquadFilter();dl.delayTime.value=SP*3;fb.gain.value=.36;lp.type='lowpass';lp.frequency.value=1700;MUS.dl=dl;
+  MUS.send.connect(dl);dl.connect(lp);lp.connect(fb);fb.connect(dl);lp.connect(MUS.bus);
+  MUS.bus.connect(comp);comp.connect(out);out.connect(AC.destination);MUS.out=out;
+  const nb=AC.createBuffer(1,AC.sampleRate,AC.sampleRate),d=nb.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;MUS.noise=nb;
+  MUS.next=AC.currentTime+.1;MUS.step=0;MUS.timer=setInterval(musicTick,25);
+  try{const a=new Audio('music.mp3');a.loop=true;a.volume=.8;a.addEventListener('canplaythrough',()=>{MUS.file=a;applyMusic();},{once:true});a.load();}catch(e){}
+  applyMusic();
+}
+function applyMusic(){
+  if(!AC||!MUS.out)return;const on=MUS.on&&!muted&&S.mode==='garage';
+  if(on&&!MUS.active)MUS.step=0;MUS.active=on;
+  MUS.out.gain.setTargetAtTime(on&&!MUS.file?.45:0,AC.currentTime,on?.05:.35);
+  if(MUS.file){if(on)MUS.file.play().catch(()=>{});else MUS.file.pause();}
+}
+function vKick(t){const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.setValueAtTime(150,t);o.frequency.exponentialRampToValueAtTime(48,t+.12);env(g,t,.003,1,.32);o.connect(g);mOut(g);o.start(t);o.stop(t+.4);MUS.mel.gain.cancelScheduledValues(t);MUS.mel.gain.setValueAtTime(.3,t);MUS.mel.gain.linearRampToValueAtTime(1,t+SP*3);}
+function v808(t,midi,dur){const f=mtof(midi),o=AC.createOscillator(),g=AC.createGain(),sh=shaper(3.2);o.type='sine';o.frequency.setValueAtTime(f*1.8,t);o.frequency.exponentialRampToValueAtTime(f,t+.05);env(g,t,.004,.85,dur);o.connect(sh);sh.connect(g);mOut(g);o.start(t);o.stop(t+dur+.1);}
+function vNoise(t,type,freq,peak,dur,q){const s=AC.createBufferSource();s.buffer=MUS.noise;const f=AC.createBiquadFilter();f.type=type;f.frequency.value=freq;if(q)f.Q.value=q;const g=AC.createGain();env(g,t,.002,peak,dur);s.connect(f);f.connect(g);mOut(g,.15);s.start(t,Math.random()*.4);s.stop(t+dur+.05);}
+function vSnare(t){vNoise(t,'bandpass',1900,.55,.2,.8);const o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.setValueAtTime(220,t);o.frequency.exponentialRampToValueAtTime(140,t+.1);env(g,t,.002,.35,.12);o.connect(g);mOut(g,.2);o.start(t);o.stop(t+.2);}
+function vHat(t,open,vel){vNoise(t,'highpass',7500,.16*vel,open?.22:.045);}
+function vBell(t,f,vel){const g=AC.createGain(),bp=AC.createBiquadFilter();bp.type='bandpass';bp.frequency.value=2400;bp.Q.value=.9;env(g,t,.002,.3*vel,.28);[f,f*1.5047].forEach(x=>{const o=AC.createOscillator();o.type='square';o.frequency.value=x;o.connect(bp);o.start(t);o.stop(t+.4);});bp.connect(g);mOut(g,.35,true);}
+function vPluck(t,midi,vel){const o=AC.createOscillator(),lp=AC.createBiquadFilter(),g=AC.createGain();o.type='sawtooth';o.frequency.value=mtof(midi);lp.type='lowpass';lp.frequency.setValueAtTime(2600,t);lp.frequency.exponentialRampToValueAtTime(400,t+.2);env(g,t,.002,.1*vel,.22);o.connect(lp);lp.connect(g);mOut(g,.4,true);o.start(t);o.stop(t+.35);}
+function vPad(t,notes,dur){const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(500,t);lp.frequency.linearRampToValueAtTime(1100,t+dur*.7);const g=AC.createGain();g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.06,t+.4);g.gain.linearRampToValueAtTime(.0001,t+dur);notes.forEach(n=>[-7,7].forEach(dt=>{const o=AC.createOscillator();o.type='sawtooth';o.frequency.value=mtof(n);o.detune.value=dt;o.connect(lp);o.start(t);o.stop(t+dur+.05);}));lp.connect(g);mOut(g,.4,true);}
+function vStab(t,notes,dur,vel){const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.setValueAtTime(4200,t);lp.frequency.exponentialRampToValueAtTime(900,t+dur);const g=AC.createGain();env(g,t,.004,.07*vel,dur);notes.forEach(n=>[-12,0,12].forEach(dt=>{const o=AC.createOscillator();o.type='sawtooth';o.frequency.value=mtof(n);o.detune.value=dt;o.connect(lp);o.start(t);o.stop(t+dur+.05);}));lp.connect(g);mOut(g,.35,true);}
+function vRiser(t,dur){const s=AC.createBufferSource();s.buffer=MUS.noise;s.loop=true;const f=AC.createBiquadFilter();f.type='highpass';f.frequency.setValueAtTime(400,t);f.frequency.exponentialRampToValueAtTime(9000,t+dur);const g=AC.createGain();g.gain.setValueAtTime(.01,t);g.gain.linearRampToValueAtTime(.22,t+dur);g.gain.linearRampToValueAtTime(.0001,t+dur+.03);s.connect(f);f.connect(g);mOut(g,.1);s.start(t);s.stop(t+dur+.1);}
+function playStep(st,t){
+  const b=Math.floor(st/16)%4,s=st%16;
+  if(s===0)vPad(t,TK.pad[b],SP*16);
+  if(TK.kick(s,b))vKick(t);
+  const bi=TK.bs.indexOf(s);if(bi>=0)v808(t,TK.bass[b]+(TK.bo[s]||0),TK.bd[bi]*SP);
+  if(s===4||s===12||(b===3&&s>=13)){vSnare(t);if(s===4||s===12)vNoise(t,'highpass',3500,.3,.12);}
+  if(s%4===2)vHat(t,true,.8);else if(s%2===1)vHat(t,false,.55);else vHat(t,false,.9);
+  if(TK.stab&&(s===0||s===6||s===10)&&!(b===3&&s===10))vStab(t,TK.pad[b].map(n=>n+12),SP*(s===0?3:1.6),s===0?1:.8);
+  if(b===3&&s===8)vRiser(t,SP*8);
+  if(TK.bell){const n=TK.bell[b][s];if(n!==undefined)vBell(t,TK.bellBase*Math.pow(2,n/12),s%4===0?.9:.7);}
+  if(TK.arp&&s%2===0){const ch=TK.pad[b];vPluck(t,ch[[0,1,2,1][(s/2)%4]]+12+(s%8>=4?12:0),s%4===0?1:.75);}
+}
+function musicTick(){
+  if(!AC||MUS.file)return;
+  if(!MUS.active){MUS.next=AC.currentTime+.05;return;}
+  if(MUS.next<AC.currentTime-.3)MUS.next=AC.currentTime+.05;
+  while(MUS.next<AC.currentTime+.15){playStep(MUS.step,MUS.next);MUS.next+=SP;MUS.step=(MUS.step+1)%64;}
+}
+['pointerdown','keydown'].forEach(ev=>addEventListener(ev,()=>{audioStart();const t=document.getElementById('tapmusic');if(t)t.hidden=true;},{passive:true}));
+setTrack(TI);
 
 /* ---------- skid marks ---------- */
 const SK=800,skPos=new Float32Array(SK*12),skG=new THREE.BufferGeometry();
@@ -660,12 +735,12 @@ function drawMap(){
 function show(id,v){$(id).hidden=!v;}
 function startDrive(){audioStart();
   if(COARSE){try{const e=document.documentElement;(e.requestFullscreen?e.requestFullscreen():Promise.reject()).then(()=>screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape')).catch(()=>{});}catch(x){}}
- S.mode='drive';show('garage',false);show('hud',true);show('touch',isTouch);place(START);aiPlace();S.dist=-10;S.lapStart=null;S.laps=0;S.nitro=100;S.fov=62;
+ S.mode='drive';applyMusic();show('garage',false);show('hud',true);show('touch',isTouch);place(START);aiPlace();S.dist=-10;S.lapStart=null;S.laps=0;S.nitro=100;S.fov=62;
   skPrev[0]=skPrev[1]=null;toast('Go!');}
-function toGarage(){S.mode='garage';show('garage',true);show('hud',false);show('touch',false);place(START);aiPlace();S.dist=-10;S.lapStart=null;S.fov=62;brakeMat.emissiveIntensity=1.2;for(const k in K)K[k]=0;}
+function toGarage(){S.mode='garage';applyMusic();show('garage',true);show('hud',false);show('touch',false);place(START);aiPlace();S.dist=-10;S.lapStart=null;S.fov=62;brakeMat.emissiveIntensity=1.2;for(const k in K)K[k]=0;}
 function camNext(){S.cam=(S.cam+1)%3;S.camInit=true;toast(CAMS[S.cam][0]+' camera');}
 function resetCar(){const i=S.idx;place(i);S.camInit=true;}
-function setMute(){muted=!muted;$('bMute').textContent='Sound: '+(muted?'Off':'On');}
+function setMute(){muted=!muted;$('bMute').textContent='Sound: '+(muted?'Off':'On');applyMusic();}
 const kc=e=>e.code||({w:'KeyW',a:'KeyA',s:'KeyS',d:'KeyD',' ':'Space',Shift:'ShiftLeft',c:'KeyC',g:'KeyG',r:'KeyR',m:'KeyM',q:'KeyQ'}[e.key]||e.key);
 const KM={ArrowUp:'up',KeyW:'up',ArrowDown:'down',KeyS:'down',ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'hand',ShiftLeft:'nitro',ShiftRight:'nitro'};
 addEventListener('keydown',e=>{window.focus();
@@ -686,7 +761,7 @@ document.querySelectorAll('#touch [data-k]').forEach(b=>{const k=b.dataset.k;
   const off=e=>{K[k]=0;b.classList.remove('on');};
   b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('lostpointercapture',off);});
 $('go').onclick=startDrive;$('bGarage').onclick=toGarage;$('bReset').onclick=resetCar;$('bMenu').onclick=()=>$('tools').classList.toggle('open');
-document.querySelectorAll('#tools button:not(#bMenu)').forEach(b=>b.addEventListener('click',()=>$('tools').classList.remove('open')));$('bCam').onclick=camNext;$('bMute').onclick=setMute;$('bQual').onclick=()=>setQ((Q+1)%3);
+document.querySelectorAll('#tools button:not(#bMenu)').forEach(b=>b.addEventListener('click',()=>$('tools').classList.remove('open')));$('bCam').onclick=camNext;$('bMute').onclick=setMute;$('bMusic').onclick=toggleMusic;$('mOff').onclick=toggleMusic;$('mPrev').onclick=()=>setTrack(TI-1);$('mNext').onclick=()=>setTrack(TI+1);$('bQual').onclick=()=>setQ((Q+1)%3);
 {let dn=false,lx=0;const cx=e=>ROT?e.clientY:e.clientX;canvas.addEventListener('pointerdown',e=>{if(S.mode==='garage'){dn=true;lx=cx(e);S.dragT=3;}});
  addEventListener('pointermove',e=>{if(dn){S.orbit-=(cx(e)-lx)*.008;lx=cx(e);S.dragT=3;}});addEventListener('pointerup',()=>dn=false);}
 
@@ -725,6 +800,7 @@ function frame(now){
 }
 resize();
 $('loading').hidden=true;
+audioStart();setTimeout(()=>{const t=$('tapmusic');if(t&&AC&&AC.state==='running')t.hidden=true;},400);
 requestAnimationFrame(frame);
 window.__game={S,startDrive,K};
 </script>
