@@ -155,6 +155,27 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 .short .gdots button{height:34px}
 .narrow .gpanel{width:290px}
 @media (prefers-reduced-motion:reduce){.bar i,#toast,#flash,#fade{transition:none}}
+
+#gcam{position:absolute;right:16px;bottom:16px;width:176px;pointer-events:none;z-index:12;display:none}
+#gcam.on{display:block}
+#gcam.m-drive{right:auto;bottom:auto;left:12px;top:128px;width:150px}
+#gcam .vw{position:relative;width:100%;aspect-ratio:4/3;transform:scaleX(-1);border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.25);background:#000}
+#gcam video,#gcam canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#gcam .st{margin-top:6px;padding:5px 8px;border-radius:6px;background:rgba(12,14,22,.78);font:600 13px var(--display,sans-serif);letter-spacing:.06em;text-transform:uppercase;color:#fff;text-align:center}
+#gcam .lg{margin-top:4px;font-size:10.5px;line-height:1.35;color:#cfd5e4;text-shadow:0 1px 4px #000}
+#gcam.m-drive .lg{display:none}
+#finish{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(6,8,14,.78)}
+#finish[hidden]{display:none}
+.fcard{padding:28px 34px;border-radius:16px;text-align:center;max-width:min(520px,92%);background:rgba(14,17,26,.92);border:1px solid rgba(255,255,255,.18)}
+.fcard .fk{font:600 15px var(--display,sans-serif);letter-spacing:.3em;text-transform:uppercase;color:#ff7a2f}
+.fcard h2{margin:6px 0 4px;font:800 italic 34px/1.05 var(--display,sans-serif);text-transform:uppercase}
+.fcard .ft{font:800 italic 72px/1 var(--display,sans-serif);font-variant-numeric:tabular-nums;color:#fff;margin:8px 0 2px}
+.fcard .fu{font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#a3abbe;margin-bottom:6px}
+.fcard .fp{color:#cfd5e4;font-size:15px;margin:8px 0 14px}
+.fcard .fb{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.fcard .fb button{padding:12px 22px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);font:800 italic 20px var(--display,sans-serif);letter-spacing:.06em;text-transform:uppercase;color:#fff;cursor:pointer}
+.fcard .fb button.main{background:#ff7a2f;border-color:#ff7a2f;color:#1a0d04}
+.short .fcard{padding:14px 22px}.short .fcard .ft{font-size:46px}.short .fcard h2{font-size:24px}
 </style>
 
 <div id="stage">
@@ -167,7 +188,7 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
     <p class="tag">Night street circuit</p>
     <button class="mbtn primary" data-act="play"><b>Play</b><small>Race 5 rivals &middot; 3.6 km circuit</small></button>
     <button class="mbtn" data-act="garage"><b>Garage</b><small id="mCarName">Night Coupe</small></button>
-    <div class="chips"><button data-act="music">Music: On</button><button data-act="mute">Sound: On</button><button data-act="qual">Graphics: Auto</button></div>
+    <div class="chips"><button data-act="music">Music: On</button><button data-act="mute">Sound: On</button><button data-act="qual">Graphics: Auto</button><button data-act="gesture">Hand control: Off</button></div>
     <div class="mspace"></div>
     <div class="keys"><b>W A S D</b> / arrows drive &nbsp; <b>Space</b> drift<br><b>Shift</b> boost &nbsp; <b>C</b> camera &nbsp; <b>P</b> pause &nbsp; <b>R</b> reset</div>
     <div class="credit">Developed by Aden Babar<br>&copy; 2026 ADrive. All rights reserved.</div>
@@ -217,12 +238,15 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
     <button class="pbtn" data-act="restart">Restart race</button>
     <button class="pbtn" data-act="reset">Put car back on track</button>
     <button class="pbtn" data-act="camera">Change camera</button>
+    <button class="pbtn" data-act="gesture">Hand control: Off</button>
     <div class="prow2"><button class="pbtn" data-act="music">Music: On</button><button class="pbtn" data-act="mute">Sound: On</button><button class="pbtn" data-act="qual">Graphics: Auto</button></div>
     <button class="pbtn" data-act="garage">Garage</button>
     <button class="pbtn" data-act="menu">Main menu</button>
   </div>
 </div>
 
+<div id="gcam"><div class="vw"><video id="gvid" playsinline muted></video><canvas id="gcv" width="160" height="120"></canvas></div><div class="st" id="gst">Camera off</div><div class="lg">Open hand = Drive &middot; Fist = Brake<br>Tilt hand left/right = Steer<br>2 fingers = Drift &middot; 1 finger = Boost</div></div>
+<div id="finish" hidden><div class="fcard"><div class="fk">Finish</div><h2>You completed lap 1</h2><div class="ft" id="fTime">0:00.0</div><div class="fu">minutes : seconds</div><div class="fp" id="fMsg"></div><div class="fb"><button class="main" data-act="restart">Race again</button><button data-act="menu">Main menu</button></div></div></div>
 <div id="tapmusic" class="glass">Tap anywhere to play music</div>
 <div id="toast" class="glass"></div>
 <div id="flash"></div>
@@ -309,7 +333,7 @@ scene.add(sun,sun.target);
 const CPTS=[[0,0],[260,0],[520,10],[760,-30],[930,-130],[960,-300],[880,-440],[740,-480],[620,-420],[600,-300],[520,-220],[400,-240],[360,-340],[250,-420],[110,-400],[40,-520],[-120,-560],[-280,-500],[-340,-360],[-300,-220],[-220,-100],[-120,-30]];
 const curve=new THREE.CatmullRomCurve3(CPTS.map(p=>new THREE.Vector3(p[0],0,p[1])),true,'centripetal');
 const NS=1500,TL=curve.getLength(),DS=TL/NS;
-const HW=9,KERB=1.7,RUN=9,WALLD=HW+KERB+RUN;
+const HW=12,KERB=1.7,RUN=9,WALLD=HW+KERB+RUN;
 const TP=[],TT=[],TR=[];
 for(let i=0;i<NS;i++){const t=i/NS,p=curve.getPointAt(t),g=curve.getTangentAt(t);const l=Math.hypot(g.x,g.z);const tx=g.x/l,tz=g.z/l;TP.push({x:p.x,z:p.z});TT.push({x:tx,z:tz});TR.push({x:-tz,z:tx});}
 function ribbon(o1,o2,y,tile,material,recv){
@@ -786,7 +810,7 @@ function audioStart(){if(AC){if(AC.state==='suspended')AC.resume();return;}
   try{AC=new(window.AudioContext||window.webkitAudioContext)();eo1=AC.createOscillator();eo1.type='sawtooth';eo2=AC.createOscillator();eo2.type='square';
   ef=AC.createBiquadFilter();ef.type='lowpass';ef.frequency.value=500;eg=AC.createGain();eg.gain.value=0;eo1.connect(ef);eo2.connect(ef);ef.connect(eg);eg.connect(AC.destination);eo1.start();eo2.start();musicInit();}catch(e){AC=null;}}
 function audioUpdate(rpm,th){if(!AC)return;const t=AC.currentTime,f=36+rpm*150;eo1.frequency.setTargetAtTime(f,t,.05);eo2.frequency.setTargetAtTime(f*.5,t,.05);
-  ef.frequency.setTargetAtTime(380+rpm*1500+th*400,t,.08);eg.gain.setTargetAtTime(S.mode==='drive'&&!paused&&!muted?.035+.05*th:0,t,.1);}
+  ef.frequency.setTargetAtTime(380+rpm*1500+th*400,t,.08);eg.gain.setTargetAtTime(S.mode==='drive'&&!paused&&!S.finished&&!muted?.035+.05*th:0,t,.1);}
 
 /* ---------- phonk music (original, generated live, 3 tracks) ---------- */
 const TRACKS=[
@@ -890,7 +914,7 @@ function trackState(){
   S.idx=bi;const before=Math.floor(S.dist/NS);S.dist+=dl;const after=Math.floor(S.dist/NS);
   if(after>before&&after>=0){
     if(S.lapStart===null){S.lapStart=S.rt;toast('Lap 1');}
-    else{const lt=S.rt-S.lapStart;S.lapStart=S.rt;S.laps++;const nb=S.best===null||lt<S.best;if(nb){S.best=lt;$('best').textContent=fmt(lt);}toast((nb?'Best lap ':'Lap ')+fmt(lt));}
+    else{const lt=S.rt-S.lapStart;S.lapStart=S.rt;S.laps++;const nb=S.best===null||lt<S.best;if(nb){S.best=lt;$('best').textContent=fmt(lt);}finishRace(lt);}
   }else if(after<before&&after<0){S.lapStart=null;}
   const r=TR[bi];S.lat=(S.x-TP[bi].x)*r.x+(S.z-TP[bi].z)*r.z;
   const lim=WALLD-1.3;
@@ -1012,11 +1036,88 @@ function drawMap(){
 }
 
 
+/* ---------- hand-gesture control (camera, MediaPipe Hands) ---------- */
+const GS={on:false,busy:false,hands:null,stream:null,vid:null,cv:null,cx:null,ax:0,pose:'none',lostT:0,hold:0,last:0,tick:0,loading:false,have:false};
+const MP='https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/';
+function gLoad(src){return new Promise((ok,no)=>{if(window.Hands)return ok();const s=document.createElement('script');s.src=src;s.crossOrigin='anonymous';s.onload=ok;s.onerror=()=>no(new Error('script'));document.head.appendChild(s);});}
+function gSt(t){const e=$('gst');if(e)e.textContent=t;}
+function gRelease(){if(S.mode==='drive'){K.up=K.down=K.hand=K.nitro=0;K.axis=null;}GS.ax=0;GS.have=false;}
+function gClassify(lm,w,h){
+  const d=(a,b)=>Math.hypot((lm[a].x-lm[b].x)*w,(lm[a].y-lm[b].y)*h);
+  const ext=(t,p)=>d(0,t)>d(0,p)*1.12;
+  const i=ext(8,6),m=ext(12,10),r=ext(16,14),p=ext(20,18),n=i+m+r+p;
+  let pose=GS.pose;
+  if(n>=4||(n===3&&i&&m))pose='open';
+  else if(n===0)pose='fist';
+  else if(i&&m&&!r&&!p)pose='peace';
+  else if(i&&!m&&!r&&!p)pose='point';
+  const ang=Math.atan2((lm[0].x-lm[9].x)*w,(lm[0].y-lm[9].y)*h);
+  return {pose,ang};
+}
+function gOnResults(res){
+  const lm=res.multiHandLandmarks&&res.multiHandLandmarks[0],now=performance.now(),dt=Math.min(.3,(now-GS.last)/1000);GS.last=now;
+  const cx=GS.cx;cx.clearRect(0,0,160,120);
+  if(!lm){GS.lostT+=dt;GS.hold=0;if(GS.lostT>.4&&GS.have){gRelease();}gSt(GS.lostT>.4?'Show your hand':'…');return;}
+  GS.lostT=0;GS.have=true;
+  cx.fillStyle='#44d2ff';lm.forEach(q=>{cx.beginPath();cx.arc(q.x*160,q.y*120,2.5,0,7);cx.fill();});
+  const w=GS.vid.videoWidth||640,h=GS.vid.videoHeight||480,c=gClassify(lm,w,h);GS.pose=c.pose;
+  let t=Math.max(-1,Math.min(1,c.ang/.6));if(Math.abs(t)<.12)t=0;GS.ax+=(t-GS.ax)*.55;
+  const label={open:'Drive',fist:'Brake',peace:'Drift',point:'Boost'}[c.pose];
+  const steer=GS.ax>.15?' · Right':GS.ax<-.15?' · Left':'';
+  if(S.mode==='drive'&&!paused&&!S.finished){
+    K.up=c.pose==='fist'?0:1;K.down=c.pose==='fist'?1:0;K.hand=c.pose==='peace'?1:0;K.nitro=c.pose==='point'?1:0;K.axis=Math.abs(GS.ax)<.02?0:GS.ax;
+    gSt(label+steer);GS.hold=0;
+  }else{
+    /* hands-free menus: hold an open hand for ~1.2 s */
+    GS.hold=c.pose==='open'?GS.hold+dt:0;
+    const act=S.finished?'Race again':paused?'Resume':S.mode==='menu'?'Start race':null;
+    if(act){gSt('Hold open hand: '+act+' '+Math.min(100,Math.round(GS.hold/1.2*100))+'%');
+      if(GS.hold>1.2){GS.hold=0;if(S.finished||S.mode==='menu')startPlay();else setPause(false);}}
+    else gSt(label);
+  }
+}
+function gLoop(){
+  if(!GS.on)return;
+  const v=GS.vid;
+  if(!GS.busy&&v.readyState>=2&&performance.now()-GS.tick>48){
+    GS.busy=true;GS.tick=performance.now();
+    GS.hands.send({image:v}).catch(()=>{}).then(()=>{GS.busy=false;});
+  }
+  requestAnimationFrame(gLoop);
+}
+async function gestureOn(){
+  if(GS.on||GS.loading)return;
+  if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){toast('Camera not available here');return;}
+  GS.loading=true;GS.vid=$('gvid');GS.cv=$('gcv');GS.cx=GS.cv.getContext('2d');
+  $('gcam').classList.add('on');gSt('Starting camera…');
+  try{
+    GS.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:false});
+    GS.vid.srcObject=GS.stream;await GS.vid.play();
+    gSt('Loading hand tracker…');
+    await gLoad(MP+'hands.js');
+    GS.hands=new Hands({locateFile:f=>MP+f});
+    GS.hands.setOptions({maxNumHands:1,modelComplexity:0,minDetectionConfidence:.6,minTrackingConfidence:.5,selfieMode:false});
+    GS.hands.onResults(gOnResults);
+    await GS.hands.initialize();
+    GS.on=true;GS.last=performance.now();gSt('Show your hand');
+    show('touch',false);refreshLabels();toast('Hand control on');requestAnimationFrame(gLoop);
+  }catch(e){
+    gestureStop();toast(e&&e.name==='NotAllowedError'?'Camera permission denied':'Could not start hand control');
+  }
+  GS.loading=false;
+}
+function gestureStop(){
+  GS.on=false;if(GS.stream){GS.stream.getTracks().forEach(t=>t.stop());GS.stream=null;}
+  if(GS.vid)GS.vid.srcObject=null;if(GS.hands){try{GS.hands.close();}catch(e){}GS.hands=null;}
+  gRelease();$('gcam').classList.remove('on');show('touch',S.mode==='drive'&&isTouch&&!S.finished);refreshLabels();
+}
+function gestureToggle(){if(GS.on)gestureStop();else gestureOn();}
+
 /* ---------- screens, input, loop ---------- */
 function show(id,v){$(id).hidden=!v;}
 function refreshLabels(){
   const set=(a,t)=>document.querySelectorAll('[data-act='+a+']').forEach(b=>b.textContent=t);
-  set('music','Music: '+(MUS.on?'On':'Off'));set('mute','Sound: '+(muted?'Off':'On'));set('qual','Graphics: '+['Low','Auto','High'][Q]);
+  set('music','Music: '+(MUS.on?'On':'Off'));set('mute','Sound: '+(muted?'Off':'On'));set('qual','Graphics: '+['Low','Auto','High'][Q]);set('gesture','Hand control: '+(GS.on?'On':'Off'));
 }
 function setView(m){
   const g=m==='garage';
@@ -1028,8 +1129,8 @@ function setView(m){
 }
 function resetKnob(){const k=$('knob');if(k)k.style.transform='translateX(0)';}
 function enter(mode){
-  S.mode=mode;paused=false;setView(mode);
-  show('menu',mode==='menu');show('garagePage',mode==='garage');show('hud',mode==='drive');show('touch',mode==='drive'&&isTouch);show('pause',false);
+  S.mode=mode;paused=false;S.finished=false;show('finish',false);setView(mode);$('gcam').className=(GS.on?'on ':'')+'m-'+mode;
+  show('menu',mode==='menu');show('garagePage',mode==='garage');show('hud',mode==='drive');show('touch',mode==='drive'&&isTouch&&!GS.on);show('pause',false);
   for(const k in K)K[k]=0;K.axis=null;resetKnob();skPrev[0]=skPrev[1]=null;S.stuck=0;S.pitch=S.roll=0;S.steer=0;S.camInit=true;
   brakeMat.emissiveIntensity=1.2;
   if(mode==='drive'){place(START);aiPlace();S.dist=-10;S.lapStart=null;S.laps=0;S.nitro=100;S.fov=62;S.rt=0;S.drift=0;S.best=null;$('best').textContent='--';toast('Go!');}
@@ -1042,11 +1143,18 @@ function tryFullscreen(){if(!COARSE)return;try{const e=document.documentElement;
 function startPlay(){audioStart();tryFullscreen();go('drive');}
 function setPause(p){if(S.mode!=='drive')return;paused=p;show('pause',p);for(const k in K)K[k]=0;K.axis=null;resetKnob();applyMusic();}
 function camNext(){S.cam=(S.cam+1)%3;S.camInit=true;toast(CAMS[S.cam][0]+' camera');}
+function finishRace(lt){
+  if(S.finished)return;S.finished=true;S.best=lt;for(const k in K)K[k]=0;K.axis=null;resetKnob();
+  const m=Math.floor(lt/60),s=lt-m*60;
+  $('fTime').textContent=m+':'+(s<10?'0':'')+s.toFixed(1);
+  $('fMsg').textContent='You completed lap 1 in '+m+' minute'+(m===1?'':'s')+' '+s.toFixed(1)+' seconds.'+(GS.on?' Hold an open hand to race again.':'');
+  show('touch',false);show('finish',true);applyMusic();
+}
 function resetCar(){const i=S.idx;place(i);S.camInit=true;}
 function setMute(){muted=!muted;refreshLabels();applyMusic();}
 
 const ACT={play:startPlay,drive:startPlay,restart:startPlay,garage:()=>go('garage'),back:()=>go('menu'),menu:()=>go('menu'),prev:()=>pickCar(sel.car-1),next:()=>pickCar(sel.car+1),
-  music:toggleMusic,mute:setMute,qual:()=>setQ((Q+1)%3),resume:()=>setPause(false),reset:()=>{resetCar();setPause(false);},camera:camNext,pause:()=>setPause(true)};
+  music:toggleMusic,gesture:()=>gestureToggle(),mute:setMute,qual:()=>setQ((Q+1)%3),resume:()=>setPause(false),reset:()=>{resetCar();setPause(false);},camera:camNext,pause:()=>setPause(true)};
 $('stage').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;b.blur();audioStart();const f=ACT[b.dataset.act];if(f)f();});
 addEventListener('contextmenu',e=>e.preventDefault());
 
@@ -1109,7 +1217,7 @@ function adapt(){
 function frame(now){
   requestAnimationFrame(frame);
   const raw=Math.min(.1,(now-last)/1000);last=now;fr++;S.t+=raw;
-  if(S.mode==='drive'&&!paused){
+  if(S.mode==='drive'&&!paused&&!S.finished){
     accT+=raw;let n=0;while(accT>=HS&&n<16){step(HS);accT-=HS;n++;}if(n>=16)accT=0;
     aiStep(raw);
     setTxt('spd',String(Math.round(Math.hypot(S.vx,S.vz)*3.6)));setTxt('gear',gearTxt);setTxt('pos',racePos()+'/'+(AIs.length+1));
