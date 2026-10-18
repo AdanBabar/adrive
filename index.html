@@ -156,14 +156,22 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 .narrow .gpanel{width:290px}
 @media (prefers-reduced-motion:reduce){.bar i,#toast,#flash,#fade{transition:none}}
 
-#gcam{position:absolute;right:16px;bottom:16px;width:176px;pointer-events:none;z-index:12;display:none}
+#gcam{position:absolute;right:16px;bottom:16px;width:210px;pointer-events:none;z-index:12;display:none}
 #gcam.on{display:block}
 #gcam.m-drive{right:auto;bottom:auto;left:12px;top:128px;width:150px}
-#gcam .vw{position:relative;width:100%;aspect-ratio:4/3;transform:scaleX(-1);border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.25);background:#000}
-#gcam video,#gcam canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-#gcam .st{margin-top:6px;padding:5px 8px;border-radius:6px;background:rgba(12,14,22,.78);font:600 13px var(--display,sans-serif);letter-spacing:.06em;text-transform:uppercase;color:#fff;text-align:center}
-#gcam .lg{margin-top:4px;font-size:10.5px;line-height:1.35;color:#cfd5e4;text-shadow:0 1px 4px #000}
+#gvid{position:fixed;left:0;bottom:0;width:2px;height:2px;opacity:.01;pointer-events:none}
+#gcam .st{padding:6px 10px;border-radius:8px;background:rgba(12,14,22,.78);border:1px solid rgba(255,255,255,.18);font:700 14px var(--display,sans-serif);letter-spacing:.08em;text-transform:uppercase;color:#fff;text-align:center}
+#gcam .sb{position:relative;height:6px;margin:8px 4px 2px;border-radius:3px;background:rgba(255,255,255,.2)}
+#gcam .sb i{position:absolute;top:-3px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#44d2ff}
+#gcam .sb::before{content:'';position:absolute;left:50%;top:-2px;width:2px;height:10px;background:rgba(255,255,255,.5)}
+#gcam .lg{margin-top:6px;font-size:11px;line-height:1.4;color:#cfd5e4;text-shadow:0 1px 4px #000}
 #gcam.m-drive .lg{display:none}
+#rotate{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:#0a0c12;text-align:center;padding:24px}
+#rotate[hidden]{display:none}
+#rotate b{display:block;font:800 italic 30px var(--display,sans-serif);text-transform:uppercase;color:#ff7a2f;margin-bottom:8px}
+#rotate span{color:#cfd5e4;font-size:16px}
+#rotate .ph{font-size:56px;display:block;animation:rot 2s ease-in-out infinite}
+@keyframes rot{0%,30%{transform:rotate(0)}70%,100%{transform:rotate(90deg)}}
 #finish{position:absolute;inset:0;z-index:40;display:grid;place-items:center;background:rgba(6,8,14,.78)}
 #finish[hidden]{display:none}
 .fcard{padding:28px 34px;border-radius:16px;text-align:center;max-width:min(520px,92%);background:rgba(14,17,26,.92);border:1px solid rgba(255,255,255,.18)}
@@ -245,7 +253,8 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
   </div>
 </div>
 
-<div id="gcam"><div class="vw"><video id="gvid" playsinline muted></video><canvas id="gcv" width="160" height="120"></canvas></div><div class="st" id="gst">Camera off</div><div class="lg">Open hand = Drive &middot; Fist = Brake<br>Tilt hand left/right = Steer<br>2 fingers = Drift &middot; 1 finger = Boost</div></div>
+<div id="gcam"><video id="gvid" playsinline muted></video><canvas id="gcv" style="display:none"></canvas><div class="st" id="gst">Camera off</div><div class="sb"><i id="gdot"></i></div><div class="lg">Show your hand: it drives by itself<br>Tilt hand = steer &middot; Fist = brake<br>2 fingers = drift &middot; 1 finger = boost<br>No video is shown or saved</div></div>
+<div id="rotate" hidden><div><span class="ph">&#128241;</span><b>Turn your phone sideways</b><span>Hand control works best in landscape.<br>Rotate the phone and the game continues.</span></div></div>
 <div id="finish" hidden><div class="fcard"><div class="fk">Finish</div><h2>You completed lap 1</h2><div class="ft" id="fTime">0:00.0</div><div class="fu">minutes : seconds</div><div class="fp" id="fMsg"></div><div class="fb"><button class="main" data-act="restart">Race again</button><button data-act="menu">Main menu</button></div></div></div>
 <div id="tapmusic" class="glass">Tap anywhere to play music</div>
 <div id="toast" class="glass"></div>
@@ -333,7 +342,7 @@ scene.add(sun,sun.target);
 const CPTS=[[0,0],[260,0],[520,10],[760,-30],[930,-130],[960,-300],[880,-440],[740,-480],[620,-420],[600,-300],[520,-220],[400,-240],[360,-340],[250,-420],[110,-400],[40,-520],[-120,-560],[-280,-500],[-340,-360],[-300,-220],[-220,-100],[-120,-30]];
 const curve=new THREE.CatmullRomCurve3(CPTS.map(p=>new THREE.Vector3(p[0],0,p[1])),true,'centripetal');
 const NS=1500,TL=curve.getLength(),DS=TL/NS;
-const HW=12,KERB=1.7,RUN=9,WALLD=HW+KERB+RUN;
+const HW=19,KERB=1.7,RUN=9,WALLD=HW+KERB+RUN;
 const TP=[],TT=[],TR=[];
 for(let i=0;i<NS;i++){const t=i/NS,p=curve.getPointAt(t),g=curve.getTangentAt(t);const l=Math.hypot(g.x,g.z);const tx=g.x/l,tz=g.z/l;TP.push({x:p.x,z:p.z});TT.push({x:tx,z:tz});TR.push({x:-tz,z:tx});}
 function ribbon(o1,o2,y,tile,material,recv){
@@ -775,7 +784,7 @@ function updateGarageUI(){
 /* ---------- AI racers ---------- */
 
 
-const AI_DEF=[[0xd8262c,0xffffff,'sedan',.95,-3.5],[0x1c5bd9,0x66e0ff,'gt',.93,3.5],[0xe8e8e4,0xff4a4a,'coupe',.9,-3.5],[0x2a8f4a,0xb6ff4a,'sedan',.88,3.5],[0xff7a2f,0xffffff,'gt',.86,0]];
+const AI_DEF=[[0xd8262c,0xffffff,'sedan',.95,-5],[0x1c5bd9,0x66e0ff,'gt',.93,5],[0xe8e8e4,0xff4a4a,'coupe',.9,-5],[0x2a8f4a,0xb6ff4a,'sedan',.88,5],[0xff7a2f,0xffffff,'gt',.86,0]];
 const VL=[];
 {const ang=i=>{const t=TT[((i%NS)+NS)%NS];return Math.atan2(t.z,t.x);};
  const vc=[];for(let i=0;i<NS;i++){const k=Math.min(.05,Math.abs(wrap(ang(i+6)-ang(i-6)))/(12*DS));vc.push(Math.min(78,Math.sqrt(21/Math.max(k,1e-4))));VL.push(vc[i]);}
@@ -987,7 +996,7 @@ function carVisual(dt){
 
 /* ---------- camera ---------- */
 const CAMS=[['Chase',9.6,3.1],['Close',6.4,2.0],['Hood',0,0]];
-let VW=innerWidth,VH=innerHeight,ROT=false,Q=isTouch?1:2,rs=1;
+let VW=innerWidth,VH=innerHeight,ROT=false,Q=(isTouch||(navigator.hardwareConcurrency||8)<=4||(navigator.deviceMemory||8)<=4)?1:2,rs=isTouch?.85:1;
 function updateCam(dt){
   const sp=Math.hypot(S.vx,S.vz),gar=S.mode==='garage';
   if(!gar)sky.position.copy(camera.position);
@@ -1037,7 +1046,7 @@ function drawMap(){
 
 
 /* ---------- hand-gesture control (camera, MediaPipe Hands) ---------- */
-const GS={on:false,busy:false,hands:null,stream:null,vid:null,cv:null,cx:null,ax:0,pose:'none',lostT:0,hold:0,last:0,tick:0,loading:false,have:false};
+const GS={on:false,busy:false,hands:null,stream:null,vid:null,cand:'none',candN:0,ax:0,pose:'none',lostT:0,hold:0,last:0,tick:0,loading:false,have:false,portrait:false};
 const MP='https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/';
 function gLoad(src){return new Promise((ok,no)=>{if(window.Hands)return ok();const s=document.createElement('script');s.src=src;s.crossOrigin='anonymous';s.onload=ok;s.onerror=()=>no(new Error('script'));document.head.appendChild(s);});}
 function gSt(t){const e=$('gst');if(e)e.textContent=t;}
@@ -1056,19 +1065,19 @@ function gClassify(lm,w,h){
 }
 function gOnResults(res){
   const lm=res.multiHandLandmarks&&res.multiHandLandmarks[0],now=performance.now(),dt=Math.min(.3,(now-GS.last)/1000);GS.last=now;
-  const cx=GS.cx;cx.clearRect(0,0,160,120);
-  if(!lm){GS.lostT+=dt;GS.hold=0;if(GS.lostT>.4&&GS.have){gRelease();}gSt(GS.lostT>.4?'Show your hand':'…');return;}
+  if(!lm){GS.lostT+=dt;GS.hold=0;$('gdot').style.left='50%';if(GS.lostT>.4&&GS.have)gRelease();gSt(GS.lostT>.4?'Show your hand':'\u2026');return;}
   GS.lostT=0;GS.have=true;
-  cx.fillStyle='#44d2ff';lm.forEach(q=>{cx.beginPath();cx.arc(q.x*160,q.y*120,2.5,0,7);cx.fill();});
-  const w=GS.vid.videoWidth||640,h=GS.vid.videoHeight||480,c=gClassify(lm,w,h);GS.pose=c.pose;
-  let t=Math.max(-1,Math.min(1,c.ang/.6));if(Math.abs(t)<.12)t=0;GS.ax+=(t-GS.ax)*.55;
+  if(GS.portrait)return;
+  const c=gClassify(lm,GS.cv.width,GS.cv.height);
+  if(c.pose===GS.cand)GS.candN++;else{GS.cand=c.pose;GS.candN=1;}
+  if(GS.candN>=2)GS.pose=c.pose;c.pose=GS.pose;
+  let t=Math.max(-1,Math.min(1,c.ang/.42));if(Math.abs(t)<.1)t=0;GS.ax+=(t-GS.ax)*.5;$('gdot').style.left=(50+GS.ax*45)+'%';
   const label={open:'Drive',fist:'Brake',peace:'Drift',point:'Boost'}[c.pose];
-  const steer=GS.ax>.15?' · Right':GS.ax<-.15?' · Left':'';
+  const steer=GS.ax>.15?' \u00b7 Right':GS.ax<-.15?' \u00b7 Left':'';
   if(S.mode==='drive'&&!paused&&!S.finished){
     K.up=c.pose==='fist'?0:1;K.down=c.pose==='fist'?1:0;K.hand=c.pose==='peace'?1:0;K.nitro=c.pose==='point'?1:0;K.axis=Math.abs(GS.ax)<.02?0:GS.ax;
     gSt(label+steer);GS.hold=0;
   }else{
-    /* hands-free menus: hold an open hand for ~1.2 s */
     GS.hold=c.pose==='open'?GS.hold+dt:0;
     const act=S.finished?'Race again':paused?'Resume':S.mode==='menu'?'Start race':null;
     if(act){gSt('Hold open hand: '+act+' '+Math.min(100,Math.round(GS.hold/1.2*100))+'%');
@@ -1079,28 +1088,31 @@ function gOnResults(res){
 function gLoop(){
   if(!GS.on)return;
   const v=GS.vid;
-  if(!GS.busy&&v.readyState>=2&&performance.now()-GS.tick>48){
+  if(!GS.busy&&v.readyState>=2&&performance.now()-GS.tick>(ft>24?120:66)){
     GS.busy=true;GS.tick=performance.now();
-    GS.hands.send({image:v}).catch(()=>{}).then(()=>{GS.busy=false;});
+    const cw=256,ch=Math.max(96,Math.round(256*(v.videoHeight||480)/(v.videoWidth||640)));
+    if(GS.cv.width!==cw||GS.cv.height!==ch){GS.cv.width=cw;GS.cv.height=ch;}
+    GS.cx.drawImage(v,0,0,cw,ch);
+    GS.hands.send({image:GS.cv}).catch(()=>{}).then(()=>{GS.busy=false;});
   }
   requestAnimationFrame(gLoop);
 }
 async function gestureOn(){
   if(GS.on||GS.loading)return;
   if(!(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)){toast('Camera not available here');return;}
-  GS.loading=true;GS.vid=$('gvid');GS.cv=$('gcv');GS.cx=GS.cv.getContext('2d');
-  $('gcam').classList.add('on');gSt('Starting camera…');
+  GS.loading=true;GS.vid=$('gvid');GS.cv=$('gcv');GS.cx=GS.cv.getContext('2d');GS.cv.width=256;GS.cv.height=192;
+  $('gcam').classList.add('on');gSt('Starting camera\u2026');
   try{
-    GS.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:640},height:{ideal:480}},audio:false});
+    GS.stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:320},height:{ideal:240}},audio:false});
     GS.vid.srcObject=GS.stream;await GS.vid.play();
-    gSt('Loading hand tracker…');
+    gSt('Loading hand tracker\u2026');
     await gLoad(MP+'hands.js');
     GS.hands=new Hands({locateFile:f=>MP+f});
     GS.hands.setOptions({maxNumHands:1,modelComplexity:0,minDetectionConfidence:.6,minTrackingConfidence:.5,selfieMode:false});
     GS.hands.onResults(gOnResults);
     await GS.hands.initialize();
     GS.on=true;GS.last=performance.now();gSt('Show your hand');
-    show('touch',false);refreshLabels();toast('Hand control on');requestAnimationFrame(gLoop);
+    show('touch',false);resize();refreshLabels();toast('Hand control on');requestAnimationFrame(gLoop);
   }catch(e){
     gestureStop();toast(e&&e.name==='NotAllowedError'?'Camera permission denied':'Could not start hand control');
   }
@@ -1109,7 +1121,7 @@ async function gestureOn(){
 function gestureStop(){
   GS.on=false;if(GS.stream){GS.stream.getTracks().forEach(t=>t.stop());GS.stream=null;}
   if(GS.vid)GS.vid.srcObject=null;if(GS.hands){try{GS.hands.close();}catch(e){}GS.hands=null;}
-  gRelease();$('gcam').classList.remove('on');show('touch',S.mode==='drive'&&isTouch&&!S.finished);refreshLabels();
+  gRelease();$('gcam').classList.remove('on');show('touch',S.mode==='drive'&&isTouch&&!S.finished);resize();refreshLabels();
 }
 function gestureToggle(){if(GS.on)gestureStop();else gestureOn();}
 
@@ -1194,36 +1206,36 @@ document.querySelectorAll('#touch [data-k]').forEach(b=>{const k=b.dataset.k;
 
 /* ---------- quality: resolution scaling keeps the frame rate smooth ---------- */
 function layout(){
-  ROT=COARSE&&innerHeight>innerWidth;
+  const por=COARSE&&innerHeight>innerWidth;ROT=por&&!GS.on;{const rv=GS.on&&por;if($('rotate').hidden===rv)$('rotate').hidden=!rv;GS.portrait=rv;if(rv&&S.mode==='drive'&&!paused&&!S.finished)setPause(true);}
   const w=ROT?innerHeight:innerWidth,h=ROT?innerWidth:innerHeight,el=document.documentElement;
   el.style.setProperty('--SW',w+'px');el.style.setProperty('--W',innerWidth+'px');el.style.setProperty('--H',innerHeight+'px');
   el.classList.toggle('rot',ROT);el.classList.toggle('short',h<=520);el.classList.toggle('narrow',w<=640);el.classList.toggle('touchui',isTouch);
   VW=w;VH=h;return [w,h];
 }
-function basePR(){const d=window.devicePixelRatio||1;return Q===0?Math.min(d,1):Q===1?Math.min(d,isTouch?1.25:1.75):Math.min(d,2);}
+function basePR(){const d=window.devicePixelRatio||1;return Q===0?Math.min(d,1):Q===1?Math.min(d,isTouch?1.1:1.5):Math.min(d,isTouch?1.5:2);}
 function resize(){const s=layout();renderer.setPixelRatio(Math.max(.5,basePR()*rs));renderer.setSize(s[0],s[1],false);camera.aspect=s[0]/s[1];camera.updateProjectionMatrix();if(S.voOn){camera.setViewOffset(VW,VH,S.vo*VW,0,VW,VH);}}
 function setQ(q){Q=q;sun.castShadow=q===2;MODELS.forEach(k=>{if(CARS[k].blob)CARS[k].blob.visible=q!==2;});rs=1;resize();refreshLabels();try{localStorage.setItem('adrive_q',String(q));}catch(e){}}
 addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,200));
 try{const q=localStorage.getItem('adrive_q');if(q==='0'||q==='1'||q==='2')Q=+q;}catch(e){}
 sun.castShadow=Q===2;MODELS.forEach(k=>{if(CARS[k].blob)CARS[k].blob.visible=Q!==2;});
 
-let last=performance.now(),fr=0,ft=16.7,accT=0,evalN=0,cool=0;const HS=1/120,hudC={};
+rs=isTouch?.85:1;let last=performance.now(),fr=0,ft=16.7,accT=0,evalN=0,cool=0;const HS=1/90,hudC={};
 function setTxt(id,v){if(hudC[id]!==v){hudC[id]=v;$(id).textContent=v;}}
 function adapt(){
-  if(document.hidden)return;const lo=Q===2?.75:.5;
-  if(ft>23&&rs>lo){rs=Math.max(lo,Math.round((rs-.1)*100)/100);cool=3;resize();}
+  if(document.hidden)return;const lo=Q===2?.7:.4;
+  if(ft>20&&rs>lo){rs=Math.max(lo,Math.round((rs-.12)*100)/100);cool=2;resize();}
   else if(ft<14.8&&rs<1&&cool<=0){rs=Math.min(1,Math.round((rs+.05)*100)/100);cool=1.5;resize();}
 }
 function frame(now){
   requestAnimationFrame(frame);
   const raw=Math.min(.1,(now-last)/1000);last=now;fr++;S.t+=raw;
   if(S.mode==='drive'&&!paused&&!S.finished){
-    accT+=raw;let n=0;while(accT>=HS&&n<16){step(HS);accT-=HS;n++;}if(n>=16)accT=0;
+    accT+=raw;let n=0;while(accT>=HS&&n<6){step(HS);accT-=HS;n++;}if(n>=6)accT=0;
     aiStep(raw);
     setTxt('spd',String(Math.round(Math.hypot(S.vx,S.vz)*3.6)));setTxt('gear',gearTxt);setTxt('pos',racePos()+'/'+(AIs.length+1));
     const nw=Math.round(S.nitro);if(hudC.nit!==nw){hudC.nit=nw;$('nit').style.width=nw+'%';}
     setTxt('lapn',String(Math.max(1,S.laps+(S.lapStart!==null?1:0))));setTxt('lapt',S.lapStart!==null?fmt(S.rt-S.lapStart):'0:00.0');
-    if((fr&1)===0)drawMap();
+    if(fr%3===0)drawMap();
     audioUpdate(rpm,S.thr);
   }else{audioUpdate(.2,0);}
   updPuffs(raw);carVisual(raw);updateCam(raw);
