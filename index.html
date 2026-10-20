@@ -274,6 +274,27 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 .fcard .fb button.main{background:var(--sun);color:#2a1100}
 .short #speedo{width:140px;height:140px;bottom:30px}.short #spd{font-size:46px}
 .gpanel .cta{position:sticky;bottom:0;margin-top:auto;box-shadow:0 -14px 14px rgba(18,8,44,.9)}.short .cta{font-size:24px}
+/* no white lines */
+#menu{background:linear-gradient(100deg,rgba(18,8,40,.95) 0,rgba(14,10,34,.86) 380px,rgba(10,8,24,0) 640px)!important}
+.mbtn.primary::before{background:var(--a1)!important}
+.chips button,.gdots button,.seg button,.pbtn,.back,.gnav{border:0!important;outline:0}
+#touch button,#wheel{border:0!important}
+.pedals .big,.pedals .mid,.pedals [data-k="nitro"],.pedals [data-k="hand"]{border:0!important}
+#knob{box-shadow:0 0 16px #00d4ff!important}
+.sw button,.sw button[aria-pressed="true"]{border:0!important}
+.sw button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--a2),0 0 12px var(--a1)!important}
+.bar{background:rgba(255,255,255,.08)!important}
+.gpanel *,.fcard *,.pcard *{border-color:transparent!important}
+#map{border-color:transparent!important}
+/* perf: no filters/masks/clip-paths on live HUD over the canvas */
+#hud *,#touch *,#toast,#speedo,#speedo::before,#lapbox,#map,#drift,#wm,.logo h1{filter:none!important;-webkit-mask:none!important;mask:none!important;backdrop-filter:none!important}
+#hud #lapbox,#hud #gear,#toast,#hudbtn,#hudcam{clip-path:none!important}
+#speedo::before{display:none!important}
+#speedo{background:radial-gradient(circle,rgba(16,10,40,.85) 66%,transparent 67%)!important;box-shadow:0 0 0 5px rgba(0,212,255,.55)!important}
+#drift{-webkit-background-clip:border-box!important;background:none!important;color:#ff7ac0!important}
+#nitwrap,.bar{transform:none!important}
+#touch button,#wheel,#knob,#map,#speedo,#lapbox{box-shadow:none!important}
+#lapt{-webkit-background-clip:border-box!important;background:none!important;color:#fff!important}
 </style>
 
 <div id="stage">
@@ -371,7 +392,7 @@ renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
 renderer.setClearColor(0x07080c);
 const scene=new THREE.Scene();
 const world=new THREE.Group();scene.add(world);
-const camera=new THREE.PerspectiveCamera(62,1,0.8,2600);
+const camera=new THREE.PerspectiveCamera(62,1,0.8,1500);
 const aniso=Math.min(2,renderer.capabilities.getMaxAnisotropy());
 function tex(c,rx,ry,srgb){const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;if(srgb!==false)t.encoding=THREE.sRGBEncoding;t.anisotropy=aniso;if(rx)t.repeat.set(rx,ry||1);return t;}
 function mat(o){return new THREE.MeshStandardMaterial(o);}
@@ -1373,8 +1394,8 @@ function layout(){
   VW=w;VH=h;return [w,h];
 }
 let T=0,bad=0;
-function applyTier(t){T=t;AIR=[320,210,130][t];fog.near=[220,150,90][t];fog.far=[1700,1000,620][t];world.traverse(o=>{if(o.isPoints||o.isInstancedMesh)o.visible=t===0;});}
-function basePR(){const d=window.devicePixelRatio||1;return Q===0?Math.min(d,1):Q===1?Math.min(d,isTouch||T>0?1:1.5):Math.min(d,isTouch?1.25:2);}
+function applyTier(t){T=t;AIR=[320,210,130][t];fog.near=[220,150,90][t];fog.far=[1300,800,520][t];world.traverse(o=>{if(o.isPoints||o.isInstancedMesh)o.visible=t===0;});}
+function basePR(){const d=window.devicePixelRatio||1;return Q===0?Math.min(d,1):Q===1?Math.min(d,1):Math.min(d,isTouch?1.1:1.6);}
 function resize(){const s=layout();renderer.setPixelRatio(Math.max(.5,basePR()*rs));renderer.setSize(s[0],s[1],false);camera.aspect=s[0]/s[1];camera.updateProjectionMatrix();if(S.voOn){camera.setViewOffset(VW,VH,S.vo*VW,0,VW,VH);}}
 function setQ(q){Q=q;applyTier(q===2?0:q===0?2:1);sun.castShadow=q===2;MODELS.forEach(k=>{if(CARS[k].blob)CARS[k].blob.visible=q!==2;});rs=1;resize();refreshLabels();try{localStorage.setItem('adrive_q',String(q));}catch(e){}}
 addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,200));
@@ -1406,7 +1427,7 @@ function frame(now){
   renderer.render(scene,camera);
   if(fr>50){ft+=(raw*1000-ft)*.08;if(cool>0)cool-=raw;if(++evalN>=20){evalN=0;adapt();}}
 }
-applyTier(Q===2?0:Q===0?2:1);resize();refreshLabels();refreshCards();enter('menu');
+applyTier(Q===2?0:Q===0?2:1);rs=isTouch?.7:.85;resize();refreshLabels();refreshCards();enter('menu');
 $('loading').hidden=true;
 audioStart();setTimeout(()=>{const t=$('tapmusic');if(t&&AC&&AC.state==='running')t.hidden=true;},400);
 requestAnimationFrame(frame);
