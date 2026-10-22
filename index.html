@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#0a0c12"><meta name="author" content="Aden Babar"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"></head><body><title>ADrive</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#0a0c12"><meta name="author" content="Aden Babar"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-192.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"></head><body>
+<title>ADrive</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Saira+Condensed:ital,wght@0,600;0,800;1,800&display=swap">
 <style>
 /* ADrive - Developed by Aden Babar. Copyright 2026. All rights reserved. */
@@ -295,6 +296,21 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 #nitwrap,.bar{transform:none!important}
 #touch button,#wheel,#knob,#map,#speedo,#lapbox{box-shadow:none!important}
 #lapt{-webkit-background-clip:border-box!important;background:none!important;color:#fff!important}
+#speedo{background:none!important;box-shadow:none!important}
+#speedo>div:first-child{text-shadow:0 2px 6px #000,0 0 14px #000}
+#spd{text-shadow:0 3px 8px #000,0 0 18px rgba(0,0,0,.8)}
+#handBar{position:absolute;left:30px;right:30px;bottom:14px;max-width:760px;border-radius:0;background:linear-gradient(100deg,rgba(0,160,210,.92),rgba(123,92,255,.92));clip-path:none;padding:12px 18px;z-index:3;box-shadow:0 4px 20px rgba(0,0,0,.45)}
+.hb1{display:flex;align-items:center;gap:14px}.hbi{font-size:44px;line-height:1}
+.hb1 b{display:block;font:800 italic 26px var(--display);letter-spacing:.06em;text-transform:uppercase;color:#fff}
+.hb1 small{display:block;font:600 14px var(--body);color:#fff;opacity:.95}
+.hb1 button{margin-left:auto;flex:none;border:0;padding:12px 20px;background:var(--sun);color:#2a1100;font:800 italic 20px var(--display);text-transform:uppercase;letter-spacing:.05em;cursor:pointer}
+.hb2{display:flex;gap:6px;margin-top:10px}.hb2 span{flex:1;background:rgba(0,0,0,.3);padding:6px 4px;text-align:center;font:700 12px var(--body);color:#fff;text-transform:uppercase;letter-spacing:.05em}
+.hb2 i{display:block;font-style:normal;font-size:24px;margin-bottom:2px}.hb2 em{font-style:normal;color:#ffe97a;font-size:14px}
+#menu .keys,#menu .credit{display:none}
+.mrow{display:flex;align-items:center;gap:10px;padding:6px 0}.mrow>div{flex:1;min-width:0}.mrow b{display:block;font:700 14px var(--body);color:#fff}.mrow small{display:block;font:500 11px var(--body);color:#b9a8ff}
+.pips{display:flex;gap:4px}.pips u{width:14px;height:8px;background:rgba(255,255,255,.18);transform:skewX(-24deg)}.pips u.on{background:var(--a4)}
+.mrow button{border:0;min-width:92px;padding:8px 10px;background:var(--cool);color:#fff;font:800 13px var(--body);cursor:pointer}.mrow button:disabled{background:#3a3560;color:#9a90d0}.mrow button.on{background:linear-gradient(100deg,#00d46a,#d6ff3a);color:#06260f}
+@media (max-width:760px),(max-height:520px){#handBar{left:12px;right:12px;padding:8px 10px}.hbi{font-size:30px}.hb1 b{font-size:18px}.hb1 small{font-size:11px}.hb1 button{padding:8px 10px;font-size:14px}.hb2 span{font-size:10px;padding:4px 2px}.hb2 i{font-size:18px}.hb2 em{font-size:12px}}
 </style>
 
 <div id="stage">
@@ -307,9 +323,10 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
     <p class="tag">Night street circuit</p>
     <button class="mbtn primary" data-act="play"><b>Play</b><small>Race 5 rivals &middot; 3.6 km circuit</small></button>
     <button class="mbtn" data-act="garage"><b>Garage</b><small id="mCarName">Night Coupe</small></button>
-    <div class="chips"><button data-act="music">Music: On</button><button data-act="mute">Sound: On</button><button data-act="qual">Graphics: Auto</button><button data-act="gesture">Hand control: Off</button></div>
+    <div class="chips"><button data-act="music">Music: On</button><button data-act="mute">Sound: On</button><button data-act="qual">Graphics: Auto</button></div>
     <div class="cardbal"><span class="cardN">0</span>&nbsp;cards</div>
-    <div class="mspace"></div>
+    <div id="handBar"><div class="hb1"><span class="hbi">&#9995;</span><div><b>Hand Control</b><small>Play with your hand through the camera. Works smoothly on desktop screens.</small></div><button data-act="gesture">Hand control: Off</button></div>
+<div class="hb2"><span><i>&#9995;</i>Open hand<br><em>Drive</em></span><span><i>&#9994;</i>Fist<br><em>Brake</em></span><span><i>&#9996;</i>2 fingers<br><em>Drift</em></span><span><i>&#9757;</i>1 finger<br><em>Boost</em></span><span><i>&#8596;</i>Tilt hand<br><em>Steer</em></span></div></div><div class="mspace"></div>
     <div class="keys"><b>W A S D</b> / arrows drive &nbsp; <b>Space</b> drift<br><b>Shift</b> boost &nbsp; <b>C</b> camera &nbsp; <b>P</b> pause &nbsp; <b>R</b> reset</div>
     <div class="credit">Developed by Aden Babar<br>&copy; 2026 ADrive. All rights reserved.</div>
   </div>
@@ -326,6 +343,7 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
     <div class="gsec"><label>Paint <span id="gPaint"></span></label><div class="sw" id="swPaint"></div></div>
     <div class="gsec"><label>Finish</label><div class="seg" id="segFin"></div></div>
     <div class="gsec"><label>Headlights <span id="gLamp"></span></label><div class="sw" id="swLamp"></div></div>
+    <div class="gsec" id="gModsBox"><label>Upgrades <span>paid with cards</span></label><div id="gMods"></div></div>
     <div style="flex:1"></div>
     <button class="cta" data-act="drive">Drive this car</button>
   </aside>
@@ -759,6 +777,13 @@ const PROFILES={
   fr:{x:1.6,r:.37,w:.3},rr:{x:-1.6,r:.39,w:.34},wz:.9,spokes:6,spokeW:.08}
 };
 
+function scaleP(p,sx,sy,sw){const m=a=>a.map(q=>[q[0]*sx,q[1]*sy]),o=JSON.parse(JSON.stringify(p));
+ o.L=p.L*sx;o.top=m(p.top);o.bot=m(p.bot);o.hw=p.hw.map(q=>[q[0]*sx,q[1]*sw]);o.cx0=p.cx0*sx;o.cx1=p.cx1*sx;o.base=p.base*sy;
+ o.ctop=m(p.ctop);o.cw=p.cw.map(q=>[q[0]*sx,q[1]*sw]);o.pillars=p.pillars.map(q=>{const r=q.slice();r[0]*=sx;r[1]*=sy;return r;});
+ o.fr=Object.assign({},p.fr,{x:p.fr.x*sx});o.rr=Object.assign({},p.rr,{x:p.rr.x*sx});return o;}
+PROFILES.rally=Object.assign(scaleP(PROFILES.sedan,.84,1.06,1.03),{spokes:6,spokeW:.09});
+PROFILES.wedge=Object.assign(scaleP(PROFILES.sport,1.07,.88,1.05),{spokes:9,spokeW:.045});
+
 function buildCar(type,opt){
   opt=opt||{};const lite=!!opt.lite,shadow=opt.shadow!==false;
   const P=PROFILES[type]||PROFILES.coupe,L=P.L;
@@ -845,7 +870,7 @@ function buildCar(type,opt){
     const e2=add(new THREE.CircleGeometry(.12,24).rotateX(-Math.PI/2).rotateY(-Math.PI/2),em,rx,yTop(rx)+.004,0);e2.rotation.z=Math.atan(rm);
   }
   /* wheels */
-  const wheels=[],tireM=mat({color:C(0x0a0a0b),roughness:.9}),rimM=mat({color:C({coupe:0x2a2c33,sedan:0xb9bec8,gt:0xa4823c,sport:0x16171b,hyper:0x0d0d10,muscle:0x8d9099}[type]||0x24262c),metalness:.9,roughness:.28}),calM=mat({color:C({coupe:0xd8262c,sedan:0x1c5bd9,gt:0xffd400,sport:0xff7a2f,hyper:0xffd400,muscle:0xd8262c}[type]||0xd8262c),roughness:.5}),pivots=[],spins=[];
+  const wheels=[],tireM=mat({color:C(0x0a0a0b),roughness:.9}),rimM=mat({color:C({coupe:0x2a2c33,sedan:0xb9bec8,gt:0xa4823c,sport:0x16171b,hyper:0x0d0d10,muscle:0x8d9099,rally:0xd9a400,wedge:0x15161a}[type]||0x24262c),metalness:.9,roughness:.28}),calM=mat({color:C({coupe:0xd8262c,sedan:0x1c5bd9,gt:0xffd400,sport:0xff7a2f,hyper:0xffd400,muscle:0xd8262c}[type]||0xd8262c),roughness:.5}),pivots=[],spins=[];
   const spokeN=lite?0:P.spokes;
   [[P.fr,true],[P.rr,false]].forEach(a=>{const w=a[0];[1,-1].forEach(s=>{
     const r=w.r,ww=w.w;
@@ -895,17 +920,23 @@ function place(i){const f=frameAt(i);S.x=f.x;S.z=f.z;S.h=f.h;S.vx=S.vz=0;S.idx=i
 place(START);
 
 /* ---------- cars, styles ---------- */
-const MODELS=['coupe','sedan','gt','sport','hyper','muscle'];
+const MODELS=['coupe','sedan','gt','sport','hyper','muscle','rally','wedge'];
 const SPEC={
  coupe:{name:'Night Coupe',cls:'Sport coupe',desc:'Low, sharp and quick to turn in. Our signature car with the yellow light strips.',top:300,acc:10.8,grip:6.8,steer:2.0,stats:[88,90,86,84]},
  sedan:{name:'Apex Sedan',cls:'Sport sedan',desc:'Longer and calmer. Very stable in fast corners and easy to control, a good first pick.',top:285,acc:10.2,grip:7.5,steer:1.9,stats:[84,84,95,70]},
  gt:{name:'Phantom GT',cls:'Super GT',desc:'Wide, low and the fastest of the three. Twitchy at the limit, so it rewards smooth hands.',top:325,acc:11.8,grip:6.0,steer:2.15,stats:[98,98,76,92]} ,
  sport:{name:'Velocity RS',cls:'Sports car',desc:'A low, wide mid-engine sports car. Sharp, light and very fast out of corners.',top:315,acc:11.4,grip:6.6,steer:2.1,stats:[95,95,84,90]},
  hyper:{name:'Specter X',cls:'Premium hypercar',desc:'Our fastest car. Ultra low and wide, with huge grip and brutal acceleration.',top:345,acc:12.4,grip:6.2,steer:2.2,stats:[100,100,82,95],prem:true,cost:600},
- muscle:{name:'Titan V8',cls:'Premium muscle',desc:'Big, loud and unstoppable in a straight line. Slides easily, a drift king.',top:330,acc:12.0,grip:5.8,steer:1.95,stats:[97,99,70,100],prem:true,cost:300}
+ muscle:{name:'Titan V8',cls:'Premium muscle',desc:'Big, loud and unstoppable in a straight line. Slides easily, a drift king.',top:330,acc:12.0,grip:5.8,steer:1.95,stats:[97,99,70,100],prem:true,cost:300},
+ rally:{name:'Rally Storm',cls:'Premium rally',desc:'Short, tall and tough. Huge grip and snappy steering, brilliant in tight corners.',top:305,acc:11.2,grip:7.9,steer:2.25,stats:[88,90,98,86],prem:true,cost:450},
+ wedge:{name:'Apex Vector',cls:'Premium supercar',desc:'A razor-flat wedge supercar. The quickest and sharpest car in the game.',top:360,acc:12.8,grip:6.6,steer:2.3,stats:[100,100,92,96],prem:true,cost:800}
 };
-const WAL=(()=>{const o={cards:0,owned:['coupe','sedan','gt','sport']};try{const j=JSON.parse(localStorage.getItem('adrive_wallet')||'null');if(j&&Number.isFinite(j.cards)){o.cards=Math.max(0,j.cards|0);if(Array.isArray(j.owned))j.owned.forEach(k=>{if(MODELS.includes(k)&&!o.owned.includes(k))o.owned.push(k);});}}catch(e){}return o;})();
+const WAL=(()=>{const o={cards:0,owned:['coupe','sedan','gt','sport'],mods:{},ex:{}};try{const j=JSON.parse(localStorage.getItem('adrive_wallet')||'null');if(j&&Number.isFinite(j.cards)){o.cards=Math.max(0,j.cards|0);if(j.mods&&typeof j.mods==='object')for(const k in j.mods)if(MODELS.includes(k)&&Array.isArray(j.mods[k]))o.mods[k]=[0,1,2].map(i=>Math.max(0,Math.min(3,j.mods[k][i]|0)));if(j.ex&&typeof j.ex==='object')for(const k in j.ex)if(MODELS.includes(k))o.ex[k]={spoiler:!!j.ex[k].spoiler,glow:!!j.ex[k].glow};if(Array.isArray(j.owned))j.owned.forEach(k=>{if(MODELS.includes(k)&&!o.owned.includes(k))o.owned.push(k);});}}catch(e){}return o;})();
 const saveWal=()=>{try{localStorage.setItem('adrive_wallet',JSON.stringify(WAL));}catch(e){}};
+const MODS=[['Engine','Top speed +3%',[120,240,420]],['Turbo','Acceleration +5%',[120,240,420]],['Tires','Grip & steering +4%',[100,200,350]]];
+const EXTRA={spoiler:['Rear spoiler',150],glow:['Neon underglow',200]};
+const gm=k=>WAL.mods[k]||(WAL.mods[k]=[0,0,0]),gx=k=>WAL.ex[k]||(WAL.ex[k]={spoiler:false,glow:false});
+function carSpec(k){const b=SPEC[k],m=gm(k);return Object.assign({},b,{top:b.top*(1+.03*m[0]),acc:b.acc*(1+.05*m[1]),grip:b.grip*(1+.04*m[2]),steer:b.steer*(1+.02*m[2]),stats:[Math.min(100,b.stats[0]+3*m[0]),Math.min(100,b.stats[1]+4*m[1]),Math.min(100,b.stats[2]+4*m[2]),Math.min(100,b.stats[3]+m[2]*2)]});}
 const isLocked=i=>!WAL.owned.includes(MODELS[i]);
 function refreshCards(){document.querySelectorAll('.cardN').forEach(e=>{e.textContent=WAL.cards;});}
 const STAT_NAMES=['Speed','Accel','Handling','Drift'];
@@ -913,10 +944,10 @@ const CARS={};MODELS.forEach(k=>{const c=buildCar(k,{});c.root.visible=false;sce
 const PAINTS=[['Gloss Black',0x0f1013],['Midnight Blue',0x0b1a4a],['Pearl White',0xe8e8e4],['Signal Red',0x9e1119],['Slate Grey',0x474c55],['Racing Green',0x0b3a2a],['Sunset Orange',0xd9531e],['Electric Blue',0x1666ff],['Violet',0x5a2bd0],['Desert Sand',0xc2a878],['Lime Rush',0x6fd400],['Hot Pink',0xff2f9a],['Lemon',0xffd400],['Cyan Flash',0x00c8ff]];
 const FINISH=['Gloss','Matte','Metallic'];
 const LAMPS=[['Yellow',0xffd400],['White',0xfff4e0],['Ice Blue',0x66d8ff],['Red',0xff3030],['Green',0x6dff6d]];
-const sel={car:0,paint:0,fin:0,lamp:0,pi:{coupe:6,sedan:7,gt:8,sport:12,hyper:11,muscle:10}};
+const sel={car:0,paint:0,fin:0,lamp:0,pi:{coupe:6,sedan:7,gt:8,sport:12,hyper:11,muscle:10,rally:13,wedge:11}};
 try{const j=JSON.parse(localStorage.getItem('adrive_sel2')||'{}');for(const k in sel)if(Number.isInteger(j[k]))sel[k]=j[k];if(j.pi&&typeof j.pi==='object')for(const k in sel.pi)if(Number.isInteger(j.pi[k]))sel.pi[k]=j.pi[k];}catch(e){}
 sel.car=Math.max(0,Math.min(MODELS.length-1,sel.car));MODELS.forEach(k=>{sel.pi[k]=Math.max(0,Math.min(PAINTS.length-1,sel.pi[k]|0));});sel.fin=Math.max(0,Math.min(2,sel.fin));sel.lamp=Math.max(0,Math.min(LAMPS.length-1,sel.lamp));
-let car=CARS[MODELS[sel.car]],CAR=SPEC[MODELS[sel.car]],brakeMat=car.brakeMat;car.root.visible=true;
+let car=CARS[MODELS[sel.car]],CAR=carSpec(MODELS[sel.car]),brakeMat=car.brakeMat;car.root.visible=true;
 let lastOwned=isLocked(sel.car)?0:sel.car;
 const saveSel=()=>{try{localStorage.setItem('adrive_sel2',JSON.stringify(sel));}catch(e){}};
 function applyStyle(c){
@@ -927,12 +958,25 @@ function applyStyle(c){
   m.needsUpdate=true;
   const L=C(LAMPS[sel.lamp][1]);c.lamp.color.copy(L);c.lamp.emissive.copy(L);c.beamMat.color.copy(L);if(c.glowMat)c.glowMat.color.copy(L);
 }
-MODELS.forEach(k=>applyStyle(CARS[k]));
+MODELS.forEach(k=>{const P=PROFILES[k],c=CARS[k],hwR=P.hw[1][1]*.86,rx=-P.L+.18,ty=P.top[1][1]+.3;
+  const dk=new THREE.MeshStandardMaterial({color:0x0b0b0e,roughness:.4,metalness:.5}),sp=new THREE.Group();
+  const pl=new THREE.Mesh(new THREE.BoxGeometry(.55,.06,hwR*2),dk);pl.position.set(rx,ty,0);sp.add(pl);
+  [-1,1].forEach(z=>{const st=new THREE.Mesh(new THREE.BoxGeometry(.08,.3,.06),dk);st.position.set(rx,ty-.15,z*hwR*.55);sp.add(st);const ep=new THREE.Mesh(new THREE.BoxGeometry(.6,.14,.04),dk);ep.position.set(rx,ty+.03,z*hwR);sp.add(ep);});
+  sp.visible=false;c.root.add(sp);c.spoiler=sp;
+  const gl=new THREE.Mesh(new THREE.PlaneGeometry(P.L*1.9,hwR*2.4),new THREE.MeshBasicMaterial({color:0xff2f9a,transparent:true,opacity:.7,blending:THREE.AdditiveBlending,depthWrite:false}));
+  gl.rotation.x=-Math.PI/2;gl.position.y=.07;gl.visible=false;c.root.add(gl);c.glow=gl;});
+function applyExtras(){MODELS.forEach(k=>{const e=gx(k),c=CARS[k],own=WAL.owned.includes(k);c.spoiler.visible=own&&e.spoiler;c.glow.visible=own&&e.glow;});}
+MODELS.forEach(k=>applyStyle(CARS[k]));applyExtras();
 function pickCar(i){
   car.root.visible=false;sel.car=(i+MODELS.length)%MODELS.length;
-  const k=MODELS[sel.car];car=CARS[k];CAR=SPEC[k];brakeMat=car.brakeMat;car.root.visible=true;
+  const k=MODELS[sel.car];car=CARS[k];CAR=carSpec(k);brakeMat=car.brakeMat;car.root.visible=true;
   car.beams.visible=S.mode!=='garage';applyStyle(car);if(!isLocked(sel.car))lastOwned=sel.car;saveSel();updateGarageUI();
 }
+function buyMod(i){const k=MODELS[sel.car];if(isLocked(sel.car))return;const m=gm(k),lv=m[i];if(lv>=3)return;const c=MODS[i][2][lv];
+  if(WAL.cards<c){toast('Need '+(c-WAL.cards)+' more cards');return;}WAL.cards-=c;m[i]=lv+1;saveWal();CAR=carSpec(k);toast(MODS[i][0]+' upgraded to level '+(lv+1));refreshCards();updateGarageUI();}
+function buyExtra(x){const k=MODELS[sel.car];if(isLocked(sel.car))return;const e=gx(k);if(e[x]){e[x]=false;saveWal();applyExtras();updateGarageUI();return;}
+  if(!e['own_'+x]){const c=EXTRA[x][1];if(WAL.cards<c){toast('Need '+(c-WAL.cards)+' more cards');return;}WAL.cards-=c;e['own_'+x]=true;}
+  e[x]=true;saveWal();applyExtras();refreshCards();updateGarageUI();}
 function buyCar(){const k=MODELS[sel.car],sp=SPEC[k];if(WAL.cards<sp.cost){toast('Need '+(sp.cost-WAL.cards)+' more cards. Finish a lap to earn cards.');return;}WAL.cards-=sp.cost;WAL.owned.push(k);lastOwned=sel.car;saveWal();toast(sp.name+' unlocked!');refreshCards();updateGarageUI();}
 function updateGarageUI(){
   const k=MODELS[sel.car],sp=SPEC[k];
@@ -943,6 +987,10 @@ function updateGarageUI(){
   [...$('swLamp').children].forEach((b,i)=>b.setAttribute('aria-pressed',i===sel.lamp?'true':'false'));
   [...$('segFin').children].forEach((b,i)=>b.setAttribute('aria-pressed',i===sel.fin?'true':'false'));
   [...$('gDots').children].forEach((b,i)=>b.setAttribute('aria-pressed',i===sel.car?'true':'false'));
+  const cs=carSpec(k);document.querySelectorAll('#gStats .stat').forEach((r,i)=>{r.querySelector('i').style.width=cs.stats[i]+'%';r.querySelector('b').textContent=cs.stats[i];});
+  $('gModsBox').style.display=lk?'none':'';
+  const m=gm(k),e=gx(k);MODS.forEach((md,i)=>{const row=$('mod'+i);row.querySelector('.pips').innerHTML=[0,1,2].map(j=>'<u'+(j<m[i]?' class="on"':'')+'></u>').join('');const b=row.querySelector('button');b.textContent=m[i]>=3?'MAX':md[2][m[i]]+' cards';b.disabled=m[i]>=3;});
+  ['spoiler','glow'].forEach(x=>{const b=$('ex_'+x).querySelector('button');b.textContent=e[x]?'ON':(e['own_'+x]?'OFF':EXTRA[x][1]+' cards');b.className=e[x]?'on':'';});
 }
 (function buildGarageUI(){
   STAT_NAMES.forEach(n=>{const d=document.createElement('div');d.className='stat';d.innerHTML='<span>'+n+'</span><div class="bar"><i></i></div><b></b>';$('gStats').appendChild(d);});
@@ -950,6 +998,8 @@ function updateGarageUI(){
   LAMPS.forEach((p,i)=>{const b=document.createElement('button');b.style.background='#'+p[1].toString(16).padStart(6,'0');b.title=p[0];b.setAttribute('aria-label',p[0]+' headlights');b.onclick=()=>{sel.lamp=i;MODELS.forEach(k=>applyStyle(CARS[k]));saveSel();updateGarageUI();};$('swLamp').appendChild(b);});
   FINISH.forEach((n,i)=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>{sel.fin=i;MODELS.forEach(k=>applyStyle(CARS[k]));saveSel();updateGarageUI();};$('segFin').appendChild(b);});
   MODELS.forEach((k,i)=>{const b=document.createElement('button');b.textContent=SPEC[k].name+(SPEC[k].prem?' \u2605':'');b.onclick=()=>pickCar(i);$('gDots').appendChild(b);});
+  MODS.forEach((md,i)=>{const d=document.createElement('div');d.className='mrow';d.id='mod'+i;d.innerHTML='<div><b>'+md[0]+'</b><small>'+md[1]+'</small></div><span class="pips"></span><button></button>';d.querySelector('button').onclick=()=>buyMod(i);$('gMods').appendChild(d);});
+  Object.keys(EXTRA).forEach(x=>{const d=document.createElement('div');d.className='mrow';d.id='ex_'+x;d.innerHTML='<div><b>'+EXTRA[x][0]+'</b><small>Looks only</small></div><span class="pips"></span><button></button>';d.querySelector('button').onclick=()=>buyExtra(x);$('gMods').appendChild(d);});
   updateGarageUI();
 })();
 
@@ -1394,7 +1444,7 @@ function layout(){
   VW=w;VH=h;return [w,h];
 }
 let T=0,bad=0;
-function applyTier(t){T=t;AIR=[320,210,130][t];fog.near=[220,150,90][t];fog.far=[1300,800,520][t];world.traverse(o=>{if(o.isPoints||o.isInstancedMesh)o.visible=t===0;});}
+function applyTier(t){T=t;AIR=[240,160,100][t];fog.near=[220,150,90][t];fog.far=[1300,800,520][t];world.traverse(o=>{if(o.isPoints||o.isInstancedMesh)o.visible=t===0;});}
 function basePR(){const d=window.devicePixelRatio||1;return Q===0?Math.min(d,1):Q===1?Math.min(d,1):Math.min(d,isTouch?1.1:1.6);}
 function resize(){const s=layout();renderer.setPixelRatio(Math.max(.5,basePR()*rs));renderer.setSize(s[0],s[1],false);camera.aspect=s[0]/s[1];camera.updateProjectionMatrix();if(S.voOn){camera.setViewOffset(VW,VH,S.vo*VW,0,VW,VH);}}
 function setQ(q){Q=q;applyTier(q===2?0:q===0?2:1);sun.castShadow=q===2;MODELS.forEach(k=>{if(CARS[k].blob)CARS[k].blob.visible=q!==2;});rs=1;resize();refreshLabels();try{localStorage.setItem('adrive_q',String(q));}catch(e){}}
@@ -1427,9 +1477,10 @@ function frame(now){
   renderer.render(scene,camera);
   if(fr>50){ft+=(raw*1000-ft)*.08;if(cool>0)cool-=raw;if(++evalN>=20){evalN=0;adapt();}}
 }
-applyTier(Q===2?0:Q===0?2:1);rs=isTouch?.7:.85;resize();refreshLabels();refreshCards();enter('menu');
+applyTier(Q===2?0:Q===0?2:1);rs=isTouch?.6:.8;resize();refreshLabels();refreshCards();enter('menu');
 $('loading').hidden=true;
 audioStart();setTimeout(()=>{const t=$('tapmusic');if(t&&AC&&AC.state==='running')t.hidden=true;},400);
 requestAnimationFrame(frame);
 window.__game={S,K,enter,go,pickCar,setQ,sel,renderer,world,scene,camera,startPlay,ACT,get paused(){return paused;},get rs(){return rs;}};
 </script>
+<script>if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));</script>
