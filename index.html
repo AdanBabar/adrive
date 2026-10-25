@@ -311,6 +311,86 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 .pips{display:flex;gap:4px}.pips u{width:14px;height:8px;background:rgba(255,255,255,.18);transform:skewX(-24deg)}.pips u.on{background:var(--a4)}
 .mrow button{border:0;min-width:92px;padding:8px 10px;background:var(--cool);color:#fff;font:800 13px var(--body);cursor:pointer}.mrow button:disabled{background:#3a3560;color:#9a90d0}.mrow button.on{background:linear-gradient(100deg,#00d46a,#d6ff3a);color:#06260f}
 @media (max-width:760px),(max-height:520px){#handBar{left:12px;right:12px;padding:8px 10px}.hbi{font-size:30px}.hb1 b{font-size:18px}.hb1 small{font-size:11px}.hb1 button{padding:8px 10px;font-size:14px}.hb2 span{font-size:10px;padding:4px 2px}.hb2 i{font-size:18px}.hb2 em{font-size:12px}}
+/* ===== mobile (touch) fixes ===== */
+html .touchui #speedo{top:8px!important;bottom:auto!important;right:50%!important;transform:translateX(50%)!important;width:auto!important;height:auto!important;background:none!important;display:flex;flex-direction:column;align-items:center}
+html .touchui #speedo>div:first-child{flex-direction:row;align-items:baseline;gap:6px}
+html .touchui #spd{font-size:34px!important;line-height:1}
+html .touchui #unit{display:inline!important;order:0;margin:0;font-size:11px}
+html .touchui #gear{order:0;margin:0 0 0 4px;font-size:14px;padding:0 8px}
+html .touchui #nitwrap{position:static!important;width:120px!important;height:7px!important;margin:3px 0 0!important}
+html .touchui #toast{top:70px}
+html .touchui #drift{top:34%}
+.short #handBar{left:10px;right:auto;width:min(560px,calc(100% - 20px));bottom:8px;padding:6px 10px}
+.short .hb1 small{display:none}.short .hbi{font-size:24px}.short .hb1 b{font-size:16px}.short .hb1 button{padding:6px 10px;font-size:13px}
+.short .hb2{margin-top:5px;gap:4px}.short .hb2 span{padding:3px 2px;font-size:9px}.short .hb2 i{font-size:15px;margin:0}.short .hb2 em{font-size:10px}
+.short #menu .mbtn.primary{padding-top:10px;padding-bottom:10px}.short #menu .mbtn.primary b{font-size:32px}
+.short #menu .cardbal{top:12px}
+.short .gdots{flex-wrap:nowrap;overflow-x:auto;max-width:calc(100% - 340px);left:10px;bottom:8px;scrollbar-width:none}.short .gdots button{flex:none;height:32px;padding:0 12px;font-size:12px}
+.short .sw{gap:6px}.short .sw button{width:24px;height:24px}
+.short .gpanel .gsec label{margin-bottom:4px;font-size:11px}
+.short #gModsBox .mrow{padding:3px 0}.short .mrow button{padding:5px 8px;min-width:80px;font-size:12px}
+.short .gpanel h3{font-size:26px}.short .gcls{font-size:11px}
+.short .gpanel .cta{height:42px;font-size:20px}
+.short .gbar{padding-top:6px}.short #wm{display:none}
+/* ===== MOBILE (phone landscape) ===== */
+.touchui.short #lapbox{top:6px;left:8px;padding:5px 16px 5px 12px;min-width:0}
+.touchui.short #lapbox .k{font-size:11px}.touchui.short #lapt{font-size:22px}
+.touchui.short #map{width:76px;height:76px;top:6px;right:8px;border-width:2px}
+.touchui.short #hudbtn{top:6px;right:92px;width:36px;height:36px;font-size:14px}
+.touchui.short #hudcam{top:6px;right:134px;height:36px;padding:0 12px;font-size:12px}
+.touchui.short #speedo{width:104px;height:104px;bottom:6px;right:50%;transform:translateX(50%)}
+.touchui.short #spd{font-size:36px}.touchui.short #unit{font-size:9px;margin:0}.touchui.short #gear{font-size:13px;margin-top:1px;padding:0 10px}
+.touchui.short #nitwrap{height:7px;bottom:-8px}
+.touchui.short .steerzone{left:12px;bottom:12px}
+.touchui.short #wheel{width:min(210px,32vw);min-width:150px;height:66px;border-radius:33px}
+.touchui.short #knob{width:50px;height:50px;margin:-25px 0 0 -25px}
+.touchui.short #wheel .arr{font-size:26px}
+.touchui.short .pedals{right:12px;bottom:12px;gap:8px}
+.touchui.short .prow{gap:10px}
+.touchui.short #touch .pedals .sm{width:50px;height:50px;font-size:11px}
+.touchui.short .pedals .mid{width:66px;height:66px;border-radius:18px;font-size:15px}
+.touchui.short .pedals .big{width:88px;height:88px;border-radius:22px;font-size:20px}
+.touchui.short #drift{top:16%;font-size:26px}
+.touchui.short #toast{font-size:14px;padding:6px 18px;top:48px}
+/* menu */
+.touchui.short .logo h1{font-size:34px}
+.touchui.short .mcol{width:280px;padding:8px 14px 6px;gap:6px}
+.touchui.short .mbtn{padding:7px 14px 7px 16px}.touchui.short .mbtn b{font-size:22px}.touchui.short .mbtn small{font-size:11px}
+.touchui.short .mbtn.primary{padding-top:9px;padding-bottom:9px}.touchui.short .mbtn.primary b{font-size:30px}
+.touchui.short .chips{gap:4px}.touchui.short .chips button{height:28px;font-size:11px;padding:0 10px}
+.touchui.short #menu .cardbal{top:8px;right:10px;font-size:13px;padding:4px 12px}
+.touchui.short #handBar{left:10px;right:auto;width:min(420px,60vw);bottom:6px;padding:6px 8px}
+.touchui.short .hbi{font-size:24px}.touchui.short .hb1 b{font-size:15px}.touchui.short .hb1 small{font-size:10px;line-height:1.15}
+.touchui.short .hb1{gap:8px}.touchui.short .hb1 button{padding:6px 8px;font-size:12px}
+.touchui.short .hb2{margin-top:5px;gap:3px}.touchui.short .hb2 span{font-size:9px;padding:3px 1px}.touchui.short .hb2 i{font-size:15px;margin:0}.touchui.short .hb2 em{font-size:10px}
+.touchui.short #wm{display:none}
+#menu .tip,.touchui.short #menu .tap{display:none}
+/* garage */
+.touchui.short .gbar{height:42px}
+.touchui.short .gpanel{width:290px;padding:44px 12px 0 24px;gap:5px;scrollbar-width:thin}
+.touchui.short .gpanel h3{font-size:26px;line-height:1}.touchui.short .gcls{font-size:11px}
+.touchui.short .stat{font-size:11px;margin-bottom:0}.touchui.short .bar{height:6px}
+.touchui.short .gsec label{font-size:11px}
+.touchui.short .sw button{width:24px;height:24px}.touchui.short .sw{gap:5px}
+.touchui.short .seg button{height:28px;font-size:11px;padding:0 8px}
+.touchui.short .mrow{padding:3px 0}.touchui.short .mrow b{font-size:12px}.touchui.short .mrow small{font-size:9px}
+.touchui.short .mrow button{min-width:78px;padding:6px 6px;font-size:11px}
+.touchui.short .pips u{width:10px;height:6px}
+.touchui.short .gpanel .cta{height:40px;font-size:18px;padding:0;background:var(--sun);box-shadow:0 -10px 10px 4px rgba(18,8,44,.95)}
+.touchui.short .gnav.r{right:300px}.touchui.short .gnav{width:36px;height:50px;margin-top:-25px}
+.touchui.short .gdots{flex-wrap:nowrap;overflow-x:auto;max-width:calc(100% - 310px);left:8px;bottom:6px;scrollbar-width:none;gap:4px}
+.touchui.short .gdots button{flex:none;height:30px;font-size:11px;padding:0 12px}
+.touchui.short .back{height:30px;font-size:12px;padding:0 14px}.touchui.short .gbar h2{font-size:22px}
+.touchui.short #gStats .stat:nth-child(4){display:none}
+/* pause / finish */
+.touchui.short .pcard{padding:14px 20px}.touchui.short .pcard h2{font-size:24px}.touchui.short .pbtn{padding:8px 16px;font-size:14px}
+.touchui.short .fcard{padding:10px 18px;max-height:92vh;overflow:auto}.touchui.short .fcard .ft{font-size:40px}.touchui.short .stars{font-size:28px;margin:0}
+.touchui.short #fCards{transform:scale(.85);margin:-6px 0}
+/* portrait: clearer rotate prompt */
+#rotate b{font-size:30px!important;letter-spacing:.04em}#rotate span{font-size:17px!important}#rotate .ph{font-size:80px!important;display:block;animation:rotp 2.2s ease-in-out infinite}
+@keyframes rotp{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+.touchui.short .pedals .mid{font-size:12px;letter-spacing:0}.touchui.short .pedals .big{font-size:18px;letter-spacing:0}.touchui.short #speedo{bottom:16px}.touchui.short #touch .pedals .sm{font-size:10px;letter-spacing:0}
+#touch .pedals .mid{font-size:12px!important;letter-spacing:0!important}.touchui.short #touch .pedals .big{font-size:17px!important;letter-spacing:0!important}
 </style>
 
 <div id="stage">
@@ -385,7 +465,7 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 </div>
 
 <div id="gcam"><video id="gvid" playsinline muted></video><canvas id="gcv" style="display:none"></canvas><div class="st" id="gst">Camera off</div><div class="sb"><i id="gdot"></i></div><div class="lg">Show your hand: it drives by itself<br>Tilt hand = steer &middot; Fist = brake<br>2 fingers = drift &middot; 1 finger = boost<br>No video is shown or saved</div></div>
-<div id="rotate" hidden><div><span class="ph">&#128241;</span><b>Turn your phone sideways</b><span>Hand control works best in landscape.<br>Rotate the phone and the game continues.</span></div></div>
+<div id="rotate" hidden><div><span class="ph">&#128241;</span><b>Turn your phone sideways</b><span>ADrive plays in landscape.<br>Rotate the phone and the game continues.<br><small>Tip: turn off 'Auto-rotate lock' in your phone settings.</small></span></div></div>
 <div id="finish" hidden><div class="fcard"><div class="fk">Finish</div><div class="stars" id="fStars"></div><h2>You completed lap 1</h2><div class="ft" id="fTime">0:00.0</div><div class="fu">minutes : seconds</div><div class="rcard" id="fCards"></div><div class="fp" id="fMsg"></div><div class="fb"><button class="main" data-act="restart">Race again</button><button data-act="menu">Main menu</button></div></div></div>
 <div id="tapmusic" class="glass">Tap anywhere to play music</div>
 <div id="toast" class="glass"></div>
@@ -1437,7 +1517,7 @@ document.querySelectorAll('#touch [data-k]').forEach(b=>{const k=b.dataset.k;
 
 /* ---------- quality: resolution scaling keeps the frame rate smooth ---------- */
 function layout(){
-  const por=COARSE&&innerHeight>innerWidth;ROT=por&&!GS.on;{const rv=GS.on&&por;if($('rotate').hidden===rv)$('rotate').hidden=!rv;GS.portrait=rv;if(rv&&S.mode==='drive'&&!paused&&!S.finished)setPause(true);}
+  const por=COARSE&&innerHeight>innerWidth;ROT=false;{const rv=por;if($('rotate').hidden===rv)$('rotate').hidden=!rv;GS.portrait=rv;if(rv&&S.mode==='drive'&&!paused&&!S.finished)setPause(true);}
   const w=ROT?innerHeight:innerWidth,h=ROT?innerWidth:innerHeight,el=document.documentElement;
   el.style.setProperty('--SW',w+'px');el.style.setProperty('--W',innerWidth+'px');el.style.setProperty('--H',innerHeight+'px');
   el.classList.toggle('rot',ROT);el.classList.toggle('short',h<=520);el.classList.toggle('narrow',w<=640);el.classList.toggle('touchui',isTouch);
