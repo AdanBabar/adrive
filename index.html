@@ -5,7 +5,7 @@
 <style>
 /* ADrive - Developed by Aden Babar. Copyright 2026. All rights reserved. */
 /* Layout: full-screen 3D stage; left-aligned main menu; separate garage page with showroom; HUD + touch controls while driving. */
-:root{color-scheme:dark;--ink:#0a0c12;--panel:rgba(11,13,20,.88);--line:rgba(255,255,255,.14);--text:#f2f4f9;--muted:#9aa3b8;--accent:#ff7a2f;--accent2:#44d2ff;--gold:#ffd400;--display:'Saira Condensed','Arial Narrow',sans-serif;--body:'Barlow',system-ui,sans-serif}
+:root{color-scheme:dark;--ink:#0a0c12;--panel:rgba(11,13,20,.88);--line:rgba(255,255,255,.14);--text:#f2f4f9;--muted:#9aa3b8;--accent:#ff6a1f;--accent2:#e3e9f5;--gold:#ff9a55;--display:'Saira Condensed','Arial Narrow',sans-serif;--body:'Barlow',system-ui,sans-serif}
 html,body{height:100%}
 body{margin:0;background:var(--ink);color:var(--text);font:15px var(--body);overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
 [hidden]{display:none!important}
@@ -198,199 +198,116 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 #hudcam{position:absolute;right:70px;top:176px;height:46px;padding:0 16px;border-radius:23px;pointer-events:auto;border:1px solid var(--line);background:rgba(11,13,20,.85);font:700 14px var(--display);letter-spacing:.1em;text-transform:uppercase;color:#fff}
 .touchui #hudcam{top:128px;right:66px;height:42px}
 
-/* ===== ADrive arcade theme: neon, angled panels, glossy buttons ===== */
-:root{--a1:#ff2f9a;--a2:#7b5cff;--a3:#00d4ff;--a4:#ffd400;--a5:#ff7a2f;--hot:linear-gradient(100deg,#ff2f9a,#ff7a2f);--cool:linear-gradient(100deg,#7b5cff,#00d4ff);--sun:linear-gradient(100deg,#ff7a2f,#ffd400)}
-.slant{clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%)}
-#menu{background:linear-gradient(100deg,rgba(18,8,40,.95) 0,rgba(14,10,34,.86) 380px,rgba(10,8,24,0) 640px),repeating-linear-gradient(115deg,rgba(255,255,255,.03) 0 2px,transparent 2px 22px)}
-.logo h1{background:linear-gradient(180deg,#fff,#ffd9b0 55%,#ff7a2f);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none;filter:drop-shadow(0 3px 12px rgba(255,47,154,.45))}
-.logo h1 span{color:transparent;background:var(--hot);-webkit-background-clip:text;background-clip:text}
-.tag{color:#c9b8ff}
-.mbtn{position:relative;border:0;border-left:0;border-radius:0;padding:14px 26px 14px 22px;background:linear-gradient(100deg,rgba(123,92,255,.55),rgba(0,212,255,.22));clip-path:polygon(0 0,100% 0,calc(100% - 18px) 100%,0 100%);box-shadow:none}
-.mbtn::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--cool)}
-.mbtn::after{content:'\203A';position:absolute;right:30px;top:50%;transform:translateY(-52%);font:800 34px var(--display);opacity:.7}
-.mbtn b{text-shadow:0 2px 0 rgba(0,0,0,.35)}
-.mbtn small{color:#d6ccff}
-.mbtn.primary{background:var(--sun);color:#2a1100;padding-top:18px;padding-bottom:18px}
-.mbtn.primary::before{background:#fff}
-.mbtn.primary b{font-size:44px;text-shadow:0 2px 0 rgba(255,255,255,.35)}
-.mbtn.primary small{color:#6b2d08}
-.mbtn:hover{transform:translateX(8px);filter:brightness(1.12)}
-.chips button{border-radius:6px;background:rgba(123,92,255,.28);border:1px solid rgba(176,156,255,.4);clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);padding:0 16px}
+/* ===== ADrive PRO theme: dark graphite, one orange accent, thin lines ===== */
+:root{--r:8px;--glass:rgba(10,12,18,.62);--glass2:rgba(10,12,18,.82)}
+.glass{background:var(--glass);border:1px solid var(--line);border-radius:var(--r)}
+#menu{background:linear-gradient(90deg,rgba(6,7,11,.96) 0,rgba(6,7,11,.82) 360px,rgba(6,7,11,0) 640px)}
+.logo h1{letter-spacing:.02em}
+.mbtn{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);background:rgba(255,255,255,.04)}
+.mbtn.primary{background:var(--accent);border-color:var(--accent);color:#1a0b02}.mbtn.primary small{color:rgba(26,11,2,.7)}
+.chips button{border-radius:8px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#dfe5f2}
+.cardbal{border:1px solid var(--line);background:var(--glass2);color:#fff;border-radius:var(--r);padding:7px 14px}
+.cardbal::before{background:var(--accent);box-shadow:none}
 #menu .cardbal{position:absolute;right:18px;top:40px}
-.cardbal{border:0;border-radius:6px;padding:7px 16px;background:linear-gradient(100deg,#3a2a00,#6b4a00);color:#ffe97a;box-shadow:inset 0 0 0 1px rgba(255,212,0,.6),0 0 14px rgba(255,212,0,.25);clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
-.cardbal::before{background:linear-gradient(135deg,#fff3a0,#ffb300);box-shadow:0 0 8px #ffd400}
-#wm{background:linear-gradient(90deg,transparent,rgba(123,92,255,.55),transparent);border-radius:0;padding:4px 30px}
-.gbar{background:linear-gradient(180deg,rgba(14,8,36,.92),rgba(14,8,36,0))}
-.back{border-radius:6px;border:0;background:var(--cool);color:#fff;clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);padding:0 22px}
-.gbar h2{background:var(--hot);-webkit-background-clip:text;background-clip:text;color:transparent}
-.gnav{border-radius:0;border:0;background:rgba(123,92,255,.5);color:#fff;clip-path:polygon(0 8px,100% 0,100% calc(100% - 8px),0 100%)}
-.gpanel{background:linear-gradient(270deg,rgba(18,8,44,.96) 74%,rgba(18,8,44,0))}
-.gcls{color:var(--a3)}
-.gpanel h3{background:linear-gradient(180deg,#fff,#ffd9b0);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 8px rgba(255,47,154,.4))}
-.bar{height:9px;border-radius:0;background:rgba(255,255,255,.14);transform:skewX(-24deg)}
-.bar i{border-radius:0;background:var(--hot);box-shadow:0 0 8px rgba(255,47,154,.6)}
-.stat:nth-child(2) .bar i{background:var(--sun)}.stat:nth-child(3) .bar i{background:var(--cool)}.stat:nth-child(4) .bar i{background:linear-gradient(100deg,#00d46a,#d6ff3a)}
-.sw button[aria-pressed="true"]{box-shadow:0 0 0 2px #fff,0 0 12px var(--a1)}
-.seg{border-radius:0;border:0;gap:4px}
-.seg button{border:0;background:rgba(123,92,255,.3);clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
-.seg button[aria-pressed="true"]{background:var(--hot);color:#fff}
-.cta{border-radius:0;background:var(--sun);color:#2a1100;clip-path:polygon(0 0,100% 0,calc(100% - 18px) 100%,0 100%);box-shadow:none;font-size:30px;letter-spacing:.08em}
-.cta:hover{filter:brightness(1.12);background:var(--sun)}
-.gdots button{border-radius:0;border:0;background:rgba(40,24,90,.85);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);padding:0 20px;height:42px;color:#d6ccff}
-.gdots button[aria-pressed="true"]{background:var(--hot);color:#fff;box-shadow:0 0 16px rgba(255,47,154,.6)}
-#lapbox{border:0;border-radius:0;background:linear-gradient(100deg,rgba(40,16,90,.92),rgba(40,16,90,.55));clip-path:polygon(0 0,100% 0,calc(100% - 16px) 100%,0 100%);padding:10px 30px 10px 18px;box-shadow:inset 5px 0 0 var(--a1)}
-#lapbox b{color:var(--a4)}
-#lapt{background:linear-gradient(180deg,#fff,#ffd9b0);-webkit-background-clip:text;background-clip:text;color:transparent}
-#map{border:3px solid transparent;background:linear-gradient(#11112a,#11112a) padding-box,var(--cool) border-box;box-shadow:0 0 18px rgba(123,92,255,.55)}
-#hudbtn,#hudcam{border:0;background:var(--cool);box-shadow:0 0 12px rgba(0,212,255,.4);color:#fff}
-#speedo{width:176px;height:176px;right:18px;bottom:34px;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,rgba(16,10,40,.92) 58%,rgba(16,10,40,.55) 70%,transparent 71%);text-align:center}
-#speedo::before{content:'';position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 225deg,#00d4ff 0,#7b5cff calc(var(--p,0)*135deg),#ff2f9a calc(var(--p,0)*270deg),rgba(255,255,255,.12) calc(var(--p,0)*270deg) 270deg,transparent 270deg);-webkit-mask:radial-gradient(circle,transparent 62%,#000 63%);mask:radial-gradient(circle,transparent 62%,#000 63%);filter:drop-shadow(0 0 8px rgba(123,92,255,.7))}
-#speedo>div:first-child{display:flex;flex-direction:column;align-items:center;gap:0;position:relative}
-#spd{font-size:62px;line-height:.9}
-#unit{order:2;margin:2px 0 0;font-size:13px;letter-spacing:.3em}
-#gear{order:3;margin:6px 0 0;border-radius:0;background:var(--hot);color:#fff;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);padding:0 14px}
-#nitwrap{position:absolute;left:8px;right:8px;bottom:-16px;width:auto;margin:0;height:11px;border-radius:0;transform:skewX(-24deg);background:rgba(255,255,255,.16)}
-#nit{background:linear-gradient(90deg,#00d4ff,#b6f0ff);box-shadow:0 0 10px #00d4ff}
-#drift{background:var(--hot);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
-#toast{border:0;border-radius:0;background:var(--hot);color:#fff;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);padding:10px 30px}
-.touchui #speedo{width:132px;height:132px;right:50%;transform:translateX(50%);bottom:30px}
-.touchui #spd{font-size:44px}.touchui #unit{display:block;font-size:10px}.touchui #gear{font-size:16px;margin-top:2px}
-.touchui #nitwrap{width:auto;margin:0}
-.pcard{border:0;border-radius:0;background:linear-gradient(160deg,rgba(40,16,90,.96),rgba(14,8,36,.96));box-shadow:0 0 0 2px rgba(123,92,255,.6),0 0 40px rgba(123,92,255,.4);clip-path:polygon(0 0,100% 0,100% calc(100% - 18px),calc(100% - 18px) 100%,0 100%)}
-.pcard h2{background:var(--hot);-webkit-background-clip:text;background-clip:text;color:transparent}
-.pbtn{border:0;border-radius:0;background:rgba(123,92,255,.35);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
-.pbtn.main{background:var(--sun);color:#2a1100}
-#touch button{border:2px solid rgba(255,255,255,.55);background:linear-gradient(180deg,rgba(255,255,255,.3),rgba(255,255,255,.05) 46%,rgba(0,0,0,.3)),var(--bg,#3a2a7a);box-shadow:0 0 14px var(--glow,rgba(123,92,255,.5)),inset 0 -4px 8px rgba(0,0,0,.35);color:#fff;text-shadow:0 2px 3px rgba(0,0,0,.5)}
-#touch button.on{filter:brightness(1.35);color:#fff}
-.pedals .big{--bg:#ff6a1a;--glow:rgba(255,122,47,.7);border-color:#ffd2b3;color:#fff}.pedals .big.on{background:linear-gradient(180deg,#fff3,#fff0),#ffb347}
-.pedals .mid{--bg:#d81e3c;--glow:rgba(255,60,80,.6);border-color:#ffb3bd;color:#fff}.pedals .mid.on{background:linear-gradient(180deg,#fff3,#fff0),#ff6075}
-.pedals [data-k="nitro"]{--bg:#0a8fd0;--glow:rgba(0,212,255,.7);border-color:#b9ecff;color:#fff}.pedals [data-k="nitro"].on{background:linear-gradient(180deg,#fff3,#fff0),#4fd8ff}
-.pedals [data-k="hand"]{--bg:#c99600;--glow:rgba(255,212,0,.6);border-color:#ffe97a;color:#fff}.pedals [data-k="hand"].on{background:linear-gradient(180deg,#fff3,#fff0),#ffe14a}
-#wheel{--bg:#2a1f6a;border-color:rgba(255,255,255,.5);background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,255,255,.02) 50%,rgba(0,0,0,.3)),#241a5a;box-shadow:0 0 14px rgba(123,92,255,.5),inset 0 -4px 8px rgba(0,0,0,.35)}
-#knob{background:var(--cool);box-shadow:0 0 0 3px rgba(255,255,255,.6),0 0 16px #00d4ff}
-.stars{font-size:40px;letter-spacing:8px;color:var(--a4);text-shadow:0 0 16px rgba(255,212,0,.7);margin:2px 0}
-.fcard{border:0;border-radius:0;background:linear-gradient(160deg,rgba(40,16,90,.97),rgba(14,8,36,.97));box-shadow:0 0 0 2px rgba(255,47,154,.6),0 0 50px rgba(255,47,154,.4);clip-path:polygon(0 0,100% 0,100% calc(100% - 22px),calc(100% - 22px) 100%,0 100%)}
-.fcard h2{background:var(--hot);-webkit-background-clip:text;background-clip:text;color:transparent}
-.fcard .fb button{border:0;border-radius:0;background:rgba(123,92,255,.4);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%);padding:12px 30px}
-.fcard .fb button.main{background:var(--sun);color:#2a1100}
-.short #speedo{width:140px;height:140px;bottom:30px}.short #spd{font-size:46px}
-.gpanel .cta{position:sticky;bottom:0;margin-top:auto;box-shadow:0 -14px 14px rgba(18,8,44,.9)}.short .cta{font-size:24px}
-/* no white lines */
-#menu{background:linear-gradient(100deg,rgba(18,8,40,.95) 0,rgba(14,10,34,.86) 380px,rgba(10,8,24,0) 640px)!important}
-.mbtn.primary::before{background:var(--a1)!important}
-.chips button,.gdots button,.seg button,.pbtn,.back,.gnav{border:0!important;outline:0}
-#touch button,#wheel{border:0!important}
-.pedals .big,.pedals .mid,.pedals [data-k="nitro"],.pedals [data-k="hand"]{border:0!important}
-#knob{box-shadow:0 0 16px #00d4ff!important}
-.sw button,.sw button[aria-pressed="true"]{border:0!important}
-.sw button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--a2),0 0 12px var(--a1)!important}
-.bar{background:rgba(255,255,255,.08)!important}
-.gpanel *,.fcard *,.pcard *{border-color:transparent!important}
-#map{border-color:transparent!important}
-/* perf: no filters/masks/clip-paths on live HUD over the canvas */
-#hud *,#touch *,#toast,#speedo,#speedo::before,#lapbox,#map,#drift,#wm,.logo h1{filter:none!important;-webkit-mask:none!important;mask:none!important;backdrop-filter:none!important}
-#hud #lapbox,#hud #gear,#toast,#hudbtn,#hudcam{clip-path:none!important}
-#speedo::before{display:none!important}
-#speedo{background:radial-gradient(circle,rgba(16,10,40,.85) 66%,transparent 67%)!important;box-shadow:0 0 0 5px rgba(0,212,255,.55)!important}
-#drift{-webkit-background-clip:border-box!important;background:none!important;color:#ff7ac0!important}
-#nitwrap,.bar{transform:none!important}
-#touch button,#wheel,#knob,#map,#speedo,#lapbox{box-shadow:none!important}
-#lapt{-webkit-background-clip:border-box!important;background:none!important;color:#fff!important}
-#speedo{background:none!important;box-shadow:none!important}
-#speedo>div:first-child{text-shadow:0 2px 6px #000,0 0 14px #000}
-#spd{text-shadow:0 3px 8px #000,0 0 18px rgba(0,0,0,.8)}
-#handBar{position:absolute;left:30px;right:30px;bottom:14px;max-width:760px;border-radius:0;background:linear-gradient(100deg,rgba(0,160,210,.92),rgba(123,92,255,.92));clip-path:none;padding:12px 18px;z-index:3;box-shadow:0 4px 20px rgba(0,0,0,.45)}
-.hb1{display:flex;align-items:center;gap:14px}.hbi{font-size:44px;line-height:1}
-.hb1 b{display:block;font:800 italic 26px var(--display);letter-spacing:.06em;text-transform:uppercase;color:#fff}
-.hb1 small{display:block;font:600 14px var(--body);color:#fff;opacity:.95}
-.hb1 button{margin-left:auto;flex:none;border:0;padding:12px 20px;background:var(--sun);color:#2a1100;font:800 italic 20px var(--display);text-transform:uppercase;letter-spacing:.05em;cursor:pointer}
-.hb2{display:flex;gap:6px;margin-top:10px}.hb2 span{flex:1;background:rgba(0,0,0,.3);padding:6px 4px;text-align:center;font:700 12px var(--body);color:#fff;text-transform:uppercase;letter-spacing:.05em}
-.hb2 i{display:block;font-style:normal;font-size:24px;margin-bottom:2px}.hb2 em{font-style:normal;color:#ffe97a;font-size:14px}
+#wm{background:rgba(0,0,0,.35);border-radius:6px}
+/* hand control panel */
+#handBar{position:absolute;left:30px;bottom:14px;width:min(560px,calc(100% - 60px));padding:12px 14px;background:var(--glass2);border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:var(--r);z-index:3}
+.hb1{display:flex;align-items:center;gap:12px}.hbi{display:none}
+.hb1 b{display:block;font:800 italic 22px var(--display);letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.hb1 small{display:block;font:500 13px var(--body);color:var(--muted);margin-top:1px}
+.hb1 button{margin-left:auto;flex:none;border:1px solid var(--accent);background:rgba(255,106,31,.14);color:#fff;border-radius:6px;padding:9px 14px;font:700 14px var(--display);letter-spacing:.08em;text-transform:uppercase}
+.hb2{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.hb2 span{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:6px;padding:7px 4px;text-align:center;font:600 11px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hb2 i{display:none}.hb2 em{display:block;font:800 italic 17px var(--display);color:#fff;font-style:italic;margin-top:2px}
 #menu .keys,#menu .credit{display:none}
-.mrow{display:flex;align-items:center;gap:10px;padding:6px 0}.mrow>div{flex:1;min-width:0}.mrow b{display:block;font:700 14px var(--body);color:#fff}.mrow small{display:block;font:500 11px var(--body);color:#b9a8ff}
-.pips{display:flex;gap:4px}.pips u{width:14px;height:8px;background:rgba(255,255,255,.18);transform:skewX(-24deg)}.pips u.on{background:var(--a4)}
-.mrow button{border:0;min-width:92px;padding:8px 10px;background:var(--cool);color:#fff;font:800 13px var(--body);cursor:pointer}.mrow button:disabled{background:#3a3560;color:#9a90d0}.mrow button.on{background:linear-gradient(100deg,#00d46a,#d6ff3a);color:#06260f}
-@media (max-width:760px),(max-height:520px){#handBar{left:12px;right:12px;padding:8px 10px}.hbi{font-size:30px}.hb1 b{font-size:18px}.hb1 small{font-size:11px}.hb1 button{padding:8px 10px;font-size:14px}.hb2 span{font-size:10px;padding:4px 2px}.hb2 i{font-size:18px}.hb2 em{font-size:12px}}
-/* ===== mobile (touch) fixes ===== */
-html .touchui #speedo{top:8px!important;bottom:auto!important;right:50%!important;transform:translateX(50%)!important;width:auto!important;height:auto!important;background:none!important;display:flex;flex-direction:column;align-items:center}
-html .touchui #speedo>div:first-child{flex-direction:row;align-items:baseline;gap:6px}
-html .touchui #spd{font-size:34px!important;line-height:1}
-html .touchui #unit{display:inline!important;order:0;margin:0;font-size:11px}
-html .touchui #gear{order:0;margin:0 0 0 4px;font-size:14px;padding:0 8px}
-html .touchui #nitwrap{position:static!important;width:120px!important;height:7px!important;margin:3px 0 0!important}
-html .touchui #toast{top:70px}
-html .touchui #drift{top:34%}
-.short #handBar{left:10px;right:auto;width:min(560px,calc(100% - 20px));bottom:8px;padding:6px 10px}
-.short .hb1 small{display:none}.short .hbi{font-size:24px}.short .hb1 b{font-size:16px}.short .hb1 button{padding:6px 10px;font-size:13px}
-.short .hb2{margin-top:5px;gap:4px}.short .hb2 span{padding:3px 2px;font-size:9px}.short .hb2 i{font-size:15px;margin:0}.short .hb2 em{font-size:10px}
-.short #menu .mbtn.primary{padding-top:10px;padding-bottom:10px}.short #menu .mbtn.primary b{font-size:32px}
-.short #menu .cardbal{top:12px}
-.short .gdots{flex-wrap:nowrap;overflow-x:auto;max-width:calc(100% - 340px);left:10px;bottom:8px;scrollbar-width:none}.short .gdots button{flex:none;height:32px;padding:0 12px;font-size:12px}
-.short .sw{gap:6px}.short .sw button{width:24px;height:24px}
-.short .gpanel .gsec label{margin-bottom:4px;font-size:11px}
-.short #gModsBox .mrow{padding:3px 0}.short .mrow button{padding:5px 8px;min-width:80px;font-size:12px}
-.short .gpanel h3{font-size:26px}.short .gcls{font-size:11px}
-.short .gpanel .cta{height:42px;font-size:20px}
-.short .gbar{padding-top:6px}.short #wm{display:none}
-/* ===== MOBILE (phone landscape) ===== */
-.touchui.short #lapbox{top:6px;left:8px;padding:5px 16px 5px 12px;min-width:0}
-.touchui.short #lapbox .k{font-size:11px}.touchui.short #lapt{font-size:22px}
-.touchui.short #map{width:76px;height:76px;top:6px;right:8px;border-width:2px}
-.touchui.short #hudbtn{top:6px;right:92px;width:36px;height:36px;font-size:14px}
-.touchui.short #hudcam{top:6px;right:134px;height:36px;padding:0 12px;font-size:12px}
-.touchui.short #speedo{width:104px;height:104px;bottom:6px;right:50%;transform:translateX(50%)}
-.touchui.short #spd{font-size:36px}.touchui.short #unit{font-size:9px;margin:0}.touchui.short #gear{font-size:13px;margin-top:1px;padding:0 10px}
-.touchui.short #nitwrap{height:7px;bottom:-8px}
-.touchui.short .steerzone{left:12px;bottom:12px}
-.touchui.short #wheel{width:min(210px,32vw);min-width:150px;height:66px;border-radius:33px}
-.touchui.short #knob{width:50px;height:50px;margin:-25px 0 0 -25px}
-.touchui.short #wheel .arr{font-size:26px}
-.touchui.short .pedals{right:12px;bottom:12px;gap:8px}
-.touchui.short .prow{gap:10px}
-.touchui.short #touch .pedals .sm{width:50px;height:50px;font-size:11px}
-.touchui.short .pedals .mid{width:66px;height:66px;border-radius:18px;font-size:15px}
-.touchui.short .pedals .big{width:88px;height:88px;border-radius:22px;font-size:20px}
-.touchui.short #drift{top:16%;font-size:26px}
-.touchui.short #toast{font-size:14px;padding:6px 18px;top:48px}
-/* menu */
-.touchui.short .logo h1{font-size:34px}
-.touchui.short .mcol{width:280px;padding:8px 14px 6px;gap:6px}
-.touchui.short .mbtn{padding:7px 14px 7px 16px}.touchui.short .mbtn b{font-size:22px}.touchui.short .mbtn small{font-size:11px}
-.touchui.short .mbtn.primary{padding-top:9px;padding-bottom:9px}.touchui.short .mbtn.primary b{font-size:30px}
-.touchui.short .chips{gap:4px}.touchui.short .chips button{height:28px;font-size:11px;padding:0 10px}
-.touchui.short #menu .cardbal{top:8px;right:10px;font-size:13px;padding:4px 12px}
-.touchui.short #handBar{left:10px;right:auto;width:min(420px,60vw);bottom:6px;padding:6px 8px}
-.touchui.short .hbi{font-size:24px}.touchui.short .hb1 b{font-size:15px}.touchui.short .hb1 small{font-size:10px;line-height:1.15}
-.touchui.short .hb1{gap:8px}.touchui.short .hb1 button{padding:6px 8px;font-size:12px}
-.touchui.short .hb2{margin-top:5px;gap:3px}.touchui.short .hb2 span{font-size:9px;padding:3px 1px}.touchui.short .hb2 i{font-size:15px;margin:0}.touchui.short .hb2 em{font-size:10px}
-.touchui.short #wm{display:none}
-#menu .tip,.touchui.short #menu .tap{display:none}
 /* garage */
+.gpanel{background:linear-gradient(270deg,rgba(6,7,11,.96) 75%,rgba(6,7,11,0))}
+.gpanel h3{color:#fff}.gcls{color:var(--accent)}
+.bar{border-radius:2px;background:rgba(255,255,255,.1)}.bar i{border-radius:2px;background:var(--accent)}
+.sw button[aria-pressed="true"]{box-shadow:0 0 0 2px #0a0c12,0 0 0 4px #fff}
+.seg button[aria-pressed="true"],.gdots button[aria-pressed="true"]{background:var(--accent);color:#1a0b02;border-color:var(--accent)}
+.cta{border-radius:var(--r);background:var(--accent);color:#1a0b02}
+.back,.gnav{border-radius:var(--r)}
+.gpanel .cta{position:sticky;bottom:0;margin-top:auto;box-shadow:0 -14px 14px 4px rgba(6,7,11,.95)}
+.mrow{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.mrow>div{flex:1;min-width:0}.mrow b{display:block;font:700 14px var(--body);color:#fff}.mrow small{display:block;font:500 11px var(--body);color:var(--muted)}
+.pips{display:flex;gap:4px}.pips u{width:14px;height:6px;border-radius:2px;background:rgba(255,255,255,.16)}.pips u.on{background:var(--accent)}
+.mrow button{min-width:92px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.06);color:#fff;font:700 13px var(--body);cursor:pointer}
+.mrow button.on{background:var(--accent);border-color:var(--accent);color:#1a0b02}.mrow button:disabled{opacity:.45}
+/* HUD */
+#lapbox{border-radius:var(--r);border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--glass);padding:8px 14px}
+#lapbox b{color:#fff}#lapt{color:#fff}
+#map{border:1px solid rgba(255,255,255,.25);background:rgba(8,10,15,.72)}
+#hudbtn,#hudcam{border:1px solid var(--line);background:var(--glass);color:#fff;border-radius:22px;font:700 13px var(--display);letter-spacing:.1em}
+#speedo{position:absolute;right:14px;bottom:10px;width:200px;display:flex;flex-direction:column;align-items:center;text-align:center;text-shadow:none}
+#gauge{width:200px;height:200px;display:block;filter:none}
+#speedo #spd,#speedo #gear,#speedo #unit{display:none}
+#nitwrap{position:static;width:150px;height:5px;margin:-6px auto 0;background:rgba(255,255,255,.16);border-radius:3px;overflow:hidden;transform:none}
+#nit{height:100%;background:#dfe9ff;border-radius:3px}
+#drift{color:#fff;letter-spacing:.14em}
+#toast{border:1px solid var(--line);background:var(--glass2);border-radius:var(--r);color:#fff}
+/* touch controls: neutral glass, orange only for Drive */
+#touch button,#wheel{border:1px solid rgba(255,255,255,.3);background:var(--glass);color:#fff;box-shadow:none;text-shadow:none}
+#touch button.on{background:rgba(255,255,255,.28);color:#fff;transform:scale(.96)}
+.pedals .big{border-color:var(--accent)!important;background:rgba(255,106,31,.3)!important;color:#fff!important}
+.pedals .big.on{background:var(--accent)!important}
+.pedals .mid,.pedals [data-k="nitro"],.pedals [data-k="hand"]{border-color:rgba(255,255,255,.3)!important;color:#fff!important}
+.pedals [data-k="nitro"]{background:rgba(223,233,255,.16)}
+#knob{background:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+/* dialogs */
+.pcard,.fcard{border:1px solid var(--line);border-top:2px solid var(--accent);border-radius:12px;background:var(--glass2)}
+.pbtn,.fcard .fb button{border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.07);color:#fff}
+.pbtn.main,.fcard .fb button.main{background:var(--accent);border-color:var(--accent);color:#1a0b02}
+.stars{font-size:34px;letter-spacing:8px;color:var(--accent);margin:2px 0}
+#rotate b{font-size:30px!important}#rotate span{font-size:17px!important}#rotate .ph{font-size:80px!important;display:block;animation:rotp 2.2s ease-in-out infinite}
+@keyframes rotp{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+/* ===== phone landscape ===== */
+.touchui.short #lapbox{top:6px;left:8px;padding:4px 12px;min-width:0}
+.touchui.short #lapbox .k{font-size:11px}.touchui.short #lapt{font-size:22px}
+.touchui.short #map{width:78px;height:78px;top:6px;right:8px}
+.touchui.short #hudbtn{top:6px;right:94px;width:34px;height:34px;font-size:12px}
+.touchui.short #hudcam{top:6px;right:136px;height:34px;padding:0 12px;font-size:12px}
+.touchui.short #speedo{right:176px;bottom:6px;width:112px}
+.touchui.short #gauge{width:112px;height:112px}.touchui.short #nitwrap{width:84px;margin-top:-4px;height:4px}
+.touchui.short .steerzone{left:12px;bottom:12px}
+.touchui.short #wheel{width:min(210px,32vw);min-width:150px;height:62px;border-radius:31px}
+.touchui.short #knob{width:46px;height:46px;margin:-23px 0 0 -23px}
+.touchui.short #wheel .arr{font-size:24px}
+.touchui.short .pedals{right:12px;bottom:12px;gap:8px}.touchui.short .prow{gap:8px}
+.touchui.short #touch .pedals .sm{width:50px;height:50px;font-size:10px;letter-spacing:0}
+.touchui.short #touch .pedals .mid{width:64px;height:64px;border-radius:16px;font-size:12px;letter-spacing:0}
+.touchui.short #touch .pedals .big{width:88px;height:88px;border-radius:20px;font-size:17px;letter-spacing:0}
+.touchui.short #drift{top:16%;font-size:24px}.touchui.short #toast{font-size:13px;padding:5px 16px;top:48px}
+.touchui.short .logo h1{font-size:32px}.touchui.short .mcol{width:280px;padding:8px 14px 6px;gap:6px}
+.touchui.short .mbtn{padding:7px 14px}.touchui.short .mbtn b{font-size:22px}.touchui.short .mbtn small{font-size:11px}
+.touchui.short .mbtn.primary b{font-size:28px}
+.touchui.short .chips{gap:4px}.touchui.short .chips button{height:28px;font-size:11px;padding:0 9px}
+.touchui.short #menu .cardbal{top:8px;right:10px;font-size:13px;padding:4px 10px}
+.touchui.short #handBar{left:10px;width:min(430px,62vw);bottom:6px;padding:6px 8px}
+.touchui.short .hb1 b{font-size:14px}.touchui.short .hb1 small{display:none}.touchui.short .hb1 button{padding:5px 8px;font-size:11px}
+.touchui.short .hb2{margin-top:5px;gap:3px}.touchui.short .hb2 span{font-size:8.5px;padding:3px 1px}.touchui.short .hb2 em{font-size:12px}
+.touchui.short #wm{display:none}
 .touchui.short .gbar{height:42px}
 .touchui.short .gpanel{width:290px;padding:44px 12px 0 24px;gap:5px;scrollbar-width:thin}
 .touchui.short .gpanel h3{font-size:26px;line-height:1}.touchui.short .gcls{font-size:11px}
-.touchui.short .stat{font-size:11px;margin-bottom:0}.touchui.short .bar{height:6px}
+.touchui.short .stat{font-size:11px;margin-bottom:0}.touchui.short .bar{height:5px}
 .touchui.short .gsec label{font-size:11px}
 .touchui.short .sw button{width:24px;height:24px}.touchui.short .sw{gap:5px}
 .touchui.short .seg button{height:28px;font-size:11px;padding:0 8px}
 .touchui.short .mrow{padding:3px 0}.touchui.short .mrow b{font-size:12px}.touchui.short .mrow small{font-size:9px}
-.touchui.short .mrow button{min-width:78px;padding:6px 6px;font-size:11px}
-.touchui.short .pips u{width:10px;height:6px}
-.touchui.short .gpanel .cta{height:40px;font-size:18px;padding:0;background:var(--sun);box-shadow:0 -10px 10px 4px rgba(18,8,44,.95)}
+.touchui.short .mrow button{min-width:78px;padding:6px;font-size:11px}.touchui.short .pips u{width:10px;height:5px}
+.touchui.short .gpanel .cta{height:40px;font-size:18px;padding:0}
 .touchui.short .gnav.r{right:300px}.touchui.short .gnav{width:36px;height:50px;margin-top:-25px}
 .touchui.short .gdots{flex-wrap:nowrap;overflow-x:auto;max-width:calc(100% - 310px);left:8px;bottom:6px;scrollbar-width:none;gap:4px}
 .touchui.short .gdots button{flex:none;height:30px;font-size:11px;padding:0 12px}
 .touchui.short .back{height:30px;font-size:12px;padding:0 14px}.touchui.short .gbar h2{font-size:22px}
 .touchui.short #gStats .stat:nth-child(4){display:none}
-/* pause / finish */
-.touchui.short .pcard{padding:14px 20px}.touchui.short .pcard h2{font-size:24px}.touchui.short .pbtn{padding:8px 16px;font-size:14px}
-.touchui.short .fcard{padding:10px 18px;max-height:92vh;overflow:auto}.touchui.short .fcard .ft{font-size:40px}.touchui.short .stars{font-size:28px;margin:0}
+.touchui.short .pcard{padding:14px 20px}.touchui.short .pbtn{padding:8px 16px;font-size:14px}
+.touchui.short .fcard{padding:10px 18px;max-height:92vh;overflow:auto}.touchui.short .fcard .ft{font-size:40px}.touchui.short .stars{font-size:26px;margin:0}
 .touchui.short #fCards{transform:scale(.85);margin:-6px 0}
-/* portrait: clearer rotate prompt */
-#rotate b{font-size:30px!important;letter-spacing:.04em}#rotate span{font-size:17px!important}#rotate .ph{font-size:80px!important;display:block;animation:rotp 2.2s ease-in-out infinite}
-@keyframes rotp{0%,30%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
-.touchui.short .pedals .mid{font-size:12px;letter-spacing:0}.touchui.short .pedals .big{font-size:18px;letter-spacing:0}.touchui.short #speedo{bottom:16px}.touchui.short #touch .pedals .sm{font-size:10px;letter-spacing:0}
-#touch .pedals .mid{font-size:12px!important;letter-spacing:0!important}.touchui.short #touch .pedals .big{font-size:17px!important;letter-spacing:0!important}
+.touchui.short #speedo{transform:none!important;top:auto!important}
+@media (max-height:700px){.gpanel{gap:7px!important;padding-top:58px!important}.gpanel p{display:none}.gpanel h3{font-size:32px}.sw button{width:30px;height:26px}.gsec label{margin-bottom:3px}.cta{height:46px}}
+.rcard,.rcard.gold,.rcard.silver,.rcard.bronze{background:rgba(255,255,255,.05)!important;border:1px solid var(--accent)!important;box-shadow:none!important;border-radius:8px!important}.rcard *{color:#fff!important;text-shadow:none!important}.rcard :first-child{color:var(--accent)!important}
 </style>
 
 <div id="stage">
@@ -403,7 +320,7 @@ html .touchui #drift{top:34%}
     <p class="tag">Night street circuit</p>
     <button class="mbtn primary" data-act="play"><b>Play</b><small>Race 5 rivals &middot; 3.6 km circuit</small></button>
     <button class="mbtn" data-act="garage"><b>Garage</b><small id="mCarName">Night Coupe</small></button>
-    <div class="chips"><button data-act="music">Music: On</button><button data-act="mute">Sound: On</button><button data-act="qual">Graphics: Auto</button></div>
+    <div class="chips"><button data-act="music">Music: On</button><button data-act="mute">Sound: On</button><button data-act="qual">Graphics: Auto</button><button data-act="unit">Units: km/h</button></div>
     <div class="cardbal"><span class="cardN">0</span>&nbsp;cards</div>
     <div id="handBar"><div class="hb1"><span class="hbi">&#9995;</span><div><b>Hand Control</b><small>Play with your hand through the camera. Works smoothly on desktop screens.</small></div><button data-act="gesture">Hand control: Off</button></div>
 <div class="hb2"><span><i>&#9995;</i>Open hand<br><em>Drive</em></span><span><i>&#9994;</i>Fist<br><em>Brake</em></span><span><i>&#9996;</i>2 fingers<br><em>Drift</em></span><span><i>&#9757;</i>1 finger<br><em>Boost</em></span><span><i>&#8596;</i>Tilt hand<br><em>Steer</em></span></div></div><div class="mspace"></div>
@@ -437,7 +354,8 @@ html .touchui #drift{top:34%}
   <button id="hudbtn" data-act="pause" aria-label="Pause">&#10074;&#10074;</button>
   <button id="hudcam" data-act="camera" aria-label="Change camera">Camera</button>
   <div id="speedo">
-    <div><span id="unit">KM/H</span><span id="spd">0</span><span id="gear">N</span></div>
+    <canvas id="gauge" width="360" height="360"></canvas>
+    <span id="unit"></span><span id="spd">0</span><span id="gear">N</span>
     <div id="nitwrap" title="Boost"><div id="nit"></div></div>
   </div>
 </section>
@@ -1431,9 +1349,30 @@ function gestureToggle(){if(GS.on)gestureStop();else gestureOn();}
 
 /* ---------- screens, input, loop ---------- */
 function show(id,v){$(id).hidden=!v;}
+let UNIT=0;try{UNIT=localStorage.getItem('adrive_unit')==='1'?1:0;}catch(e){}
+const GAU=document.getElementById('gauge'),gq=GAU.getContext('2d');let gKey='';
+function drawGauge(kv,gear){
+  const v=kv*(UNIT?.621371:1),mx=UNIT?220:360,key=Math.round(v)+'|'+gear+'|'+UNIT;if(key===gKey)return;gKey=key;
+  const W=GAU.width,c=W/2,a0=Math.PI*.75,sw=Math.PI*1.5,f=Math.min(1,v/mx);
+  gq.clearRect(0,0,W,W);gq.lineCap='round';
+  gq.lineWidth=W*.028;gq.strokeStyle='rgba(255,255,255,.2)';gq.beginPath();gq.arc(c,c,W*.44,a0,a0+sw);gq.stroke();
+  gq.strokeStyle='rgba(255,60,40,.85)';gq.beginPath();gq.arc(c,c,W*.44,a0+sw*.86,a0+sw);gq.stroke();
+  gq.strokeStyle='#ff6a1f';gq.lineWidth=W*.034;gq.shadowColor='rgba(255,106,31,.7)';gq.shadowBlur=W*.03;gq.beginPath();gq.arc(c,c,W*.44,a0,a0+Math.max(.001,sw*f));gq.stroke();gq.shadowBlur=0;
+  const step=UNIT?10:20,n=Math.round(mx/step);
+  for(let i=0;i<=n;i++){const a=a0+sw*i/n,mj=i%2===0,r1=W*.385,r2=W*(mj?.335:.36);
+    gq.strokeStyle=i/n>.86?'rgba(255,90,70,.9)':'rgba(255,255,255,'+(mj?.8:.4)+')';gq.lineWidth=mj?W*.012:W*.007;gq.lineCap='butt';
+    gq.beginPath();gq.moveTo(c+Math.cos(a)*r1,c+Math.sin(a)*r1);gq.lineTo(c+Math.cos(a)*r2,c+Math.sin(a)*r2);gq.stroke();
+    if(mj&&i%2===0&&i%4===0||i===n){gq.fillStyle='rgba(255,255,255,.7)';gq.font='700 '+W*.05+'px Saira Condensed,Arial Narrow,sans-serif';gq.textAlign='center';gq.textBaseline='middle';gq.fillText(String(i*step),c+Math.cos(a)*W*.29,c+Math.sin(a)*W*.29);}}
+  const na=a0+sw*f;gq.strokeStyle='#fff';gq.lineWidth=W*.014;gq.lineCap='round';gq.beginPath();gq.moveTo(c+Math.cos(na)*W*.12,c+Math.sin(na)*W*.12);gq.lineTo(c+Math.cos(na)*W*.33,c+Math.sin(na)*W*.33);gq.stroke();
+  gq.fillStyle='#fff';gq.textAlign='center';gq.textBaseline='middle';gq.font='italic 800 '+W*.27+'px Saira Condensed,Arial Narrow,sans-serif';
+  gq.shadowColor='rgba(0,0,0,.8)';gq.shadowBlur=W*.03;gq.fillText(String(Math.round(v)),c,c+W*.02);gq.shadowBlur=0;
+  gq.fillStyle='rgba(255,255,255,.65)';gq.font='700 '+W*.06+'px Saira Condensed,Arial Narrow,sans-serif';gq.fillText(UNIT?'MPH':'KM/H',c,c+W*.17);
+  gq.fillStyle='#ff6a1f';const gw=W*.12,gh=W*.075,gy=c+W*.255;gq.beginPath();gq.roundRect?gq.roundRect(c-gw/2,gy-gh/2,gw,gh,W*.015):gq.rect(c-gw/2,gy-gh/2,gw,gh);gq.fill();
+  gq.fillStyle='#1a0b02';gq.font='italic 800 '+W*.065+'px Saira Condensed,Arial Narrow,sans-serif';gq.fillText(gear,c,gy+W*.004);
+}
 function refreshLabels(){
   const set=(a,t)=>document.querySelectorAll('[data-act='+a+']').forEach(b=>b.textContent=t);
-  set('music','Music: '+(MUS.on?'On':'Off'));set('mute','Sound: '+(muted?'Off':'On'));set('qual','Graphics: '+['Low','Auto','High'][Q]);set('gesture','Hand control: '+(GS.on?'On':'Off'));
+  set('music','Music: '+(MUS.on?'On':'Off'));set('mute','Sound: '+(muted?'Off':'On'));set('qual','Graphics: '+['Low','Auto','High'][Q]);set('gesture','Hand control: '+(GS.on?'On':'Off'));set('unit','Units: '+(UNIT?'mph':'km/h'));
 }
 function setView(m){
   const g=m==='garage';
@@ -1477,7 +1416,7 @@ function resetCar(){const i=S.idx;place(i);S.camInit=true;}
 function setMute(){muted=!muted;refreshLabels();applyMusic();}
 
 const ACT={play:startPlay,drive:()=>{if(isLocked(sel.car))buyCar();else startPlay();},restart:startPlay,garage:()=>go('garage'),back:()=>go('menu'),menu:()=>go('menu'),prev:()=>pickCar(sel.car-1),next:()=>pickCar(sel.car+1),
-  music:toggleMusic,gesture:()=>gestureToggle(),mute:setMute,qual:()=>setQ((Q+1)%3),resume:()=>setPause(false),reset:()=>{resetCar();setPause(false);},camera:camNext,pause:()=>setPause(true)};
+  music:toggleMusic,gesture:()=>gestureToggle(),mute:setMute,qual:()=>setQ((Q+1)%3),unit:()=>{UNIT=UNIT?0:1;gKey='';try{localStorage.setItem('adrive_unit',String(UNIT));}catch(e){}refreshLabels();},resume:()=>setPause(false),reset:()=>{resetCar();setPause(false);},camera:camNext,pause:()=>setPause(true)};
 $('stage').addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;b.blur();audioStart();const f=ACT[b.dataset.act];if(f)f();});
 addEventListener('contextmenu',e=>e.preventDefault());
 
@@ -1524,7 +1463,15 @@ function layout(){
   VW=w;VH=h;return [w,h];
 }
 let T=0,bad=0;
-function applyTier(t){T=t;AIR=[240,160,100][t];fog.near=[220,150,90][t];fog.far=[1300,800,520][t];world.traverse(o=>{if(o.isPoints||o.isInstancedMesh)o.visible=t===0;});}
+const _carNodes=new Set();let _carInit=false;
+function liteMat(m){if(!m.isMeshStandardMaterial)return m;if(m.userData.lite)return m.userData.lite;const l=new THREE.MeshLambertMaterial({color:m.color.clone(),map:m.map||null,emissive:m.emissive.clone(),emissiveMap:m.emissiveMap||null,emissiveIntensity:m.emissiveIntensity,transparent:m.transparent,opacity:m.opacity,side:m.side,vertexColors:m.vertexColors,alphaTest:m.alphaTest});m.userData.lite=l;return l;}
+function swapMats(lite){
+  if(!_carInit){_carInit=true;MODELS.forEach(k=>CARS[k].root.traverse(o=>_carNodes.add(o)));}
+  scene.traverse(o=>{if(!o.isMesh||_carNodes.has(o)||Array.isArray(o.material))return;
+    if(!o.userData.std){if(!o.material.isMeshStandardMaterial)return;o.userData.std=o.material;}
+    o.material=lite?liteMat(o.userData.std):o.userData.std;});
+}
+function applyTier(t){T=t;swapMats(t>=1);AIR=[240,160,100][t];fog.near=[220,150,90][t];fog.far=[1300,800,520][t];world.traverse(o=>{if(o.isPoints||o.isInstancedMesh)o.visible=t===0;});}
 function basePR(){const d=window.devicePixelRatio||1;return Q===0?Math.min(d,1):Q===1?Math.min(d,1):Math.min(d,isTouch?1.1:1.6);}
 function resize(){const s=layout();renderer.setPixelRatio(Math.max(.5,basePR()*rs));renderer.setSize(s[0],s[1],false);camera.aspect=s[0]/s[1];camera.updateProjectionMatrix();if(S.voOn){camera.setViewOffset(VW,VH,S.vo*VW,0,VW,VH);}}
 function setQ(q){Q=q;applyTier(q===2?0:q===0?2:1);sun.castShadow=q===2;MODELS.forEach(k=>{if(CARS[k].blob)CARS[k].blob.visible=q!==2;});rs=1;resize();refreshLabels();try{localStorage.setItem('adrive_q',String(q));}catch(e){}}
@@ -1535,9 +1482,9 @@ sun.castShadow=Q===2;MODELS.forEach(k=>{if(CARS[k].blob)CARS[k].blob.visible=Q!=
 rs=isTouch?.85:1;let last=performance.now(),fr=0,ft=16.7,accT=0,evalN=0,cool=0;const HS=1/90,hudC={};
 function setTxt(id,v){if(hudC[id]!==v){hudC[id]=v;$(id).textContent=v;}}
 function adapt(){
-  if(document.hidden)return;const lo=Q===2?.7:.4;
+  if(document.hidden)return;const lo=Q===2?.7:isTouch?.35:.4;
   if(ft>20&&rs>lo){rs=Math.max(lo,Math.round((rs-.12)*100)/100);cool=2;resize();}
-  else if(ft>24&&rs<=lo+.001&&T<2){if(++bad>=2){bad=0;applyTier(T+1);rs=Math.min(1,lo+.25);resize();}}
+  else if(ft>(isTouch?20:24)&&rs<=lo+.001&&T<2){if(++bad>=(isTouch?1:2)){bad=0;applyTier(T+1);rs=Math.min(1,lo+.25);resize();}}
   else if(ft<14.8&&rs<1&&cool<=0){rs=Math.min(1,Math.round((rs+.05)*100)/100);cool=1.5;resize();}
 }
 function frame(now){
@@ -1547,17 +1494,17 @@ function frame(now){
   if(S.mode==='drive'&&!paused&&!S.finished){
     accT+=raw;let n=0;while(accT>=HS&&n<6){step(HS);accT-=HS;n++;}if(n>=6)accT=0;
     aiStep(raw);
-    {const kv=Math.round(Math.hypot(S.vx,S.vz)*3.6);setTxt('spd',String(kv));const pp=Math.round(Math.min(1,kv/340)*100)/100;if(hudC.p!==pp){hudC.p=pp;$('speedo').style.setProperty('--p',pp);}}setTxt('gear',gearTxt);setTxt('pos',racePos()+'/'+(AIs.length+1));
+    {const kv=Math.round(Math.hypot(S.vx,S.vz)*3.6);setTxt('spd',String(kv));const pp=Math.round(Math.min(1,kv/340)*100)/100;if(hudC.p!==pp){hudC.p=pp;$('speedo').style.setProperty('--p',pp);}}setTxt('gear',gearTxt);drawGauge(Math.hypot(S.vx,S.vz)*3.6,gearTxt);setTxt('pos',racePos()+'/'+(AIs.length+1));
     const nw=Math.round(S.nitro);if(hudC.nit!==nw){hudC.nit=nw;$('nit').style.width=nw+'%';}
     setTxt('lapn',String(Math.max(1,S.laps+(S.lapStart!==null?1:0))));setTxt('lapt',S.lapStart!==null?fmt(S.rt-S.lapStart):'0:00.0');
-    if(fr%3===0)drawMap();
+    if(fr%(isTouch?6:3)===0)drawMap();
     audioUpdate(rpm,S.thr);
   }else{audioUpdate(.2,0);}
   updPuffs(raw);carVisual(raw);updateCam(raw);
   renderer.render(scene,camera);
   if(fr>50){ft+=(raw*1000-ft)*.08;if(cool>0)cool-=raw;if(++evalN>=20){evalN=0;adapt();}}
 }
-applyTier(Q===2?0:Q===0?2:1);rs=isTouch?.6:.8;resize();refreshLabels();refreshCards();enter('menu');
+applyTier(Q===2?0:Q===0?2:1);rs=isTouch?.55:.8;resize();refreshLabels();refreshCards();enter('menu');
 $('loading').hidden=true;
 audioStart();setTimeout(()=>{const t=$('tapmusic');if(t&&AC&&AC.state==='running')t.hidden=true;},400);
 requestAnimationFrame(frame);
