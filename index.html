@@ -850,7 +850,34 @@ PROFILES.rally=Object.assign(scaleP(PROFILES.hatch,1.1,1.05,1.07),{spokes:6,spok
 PROFILES.rally.fr.r=PROFILES.rally.rr.r=.43;PROFILES.rally.fr.x=1.42;PROFILES.rally.rr.x=-1.42;
 PROFILES.wedge=Object.assign(scaleP(PROFILES.hyper,1.1,.86,1.08),{spokes:10,spokeW:.04});
 PROFILES.sport.fr.r=.34;PROFILES.hyper.fr.r=PROFILES.hyper.rr.r=.4;PROFILES.muscle.rr.w=.4;PROFILES.classic.fr.w=PROFILES.classic.rr.w=.22;
-const NEWT=['hatch','classic','pickup','rally'];
+PROFILES.fastback={L:2.25,
+  top:[[-2.25,.78],[-2.2,.9],[-1.8,.95],[-1.0,.92],[0,.86],[1.0,.78],[1.8,.68],[2.2,.6],[2.25,.5]],
+  bot:[[-2.25,.34],[-2.1,.24],[-1.8,.2],[1.8,.2],[2.1,.24],[2.25,.3]],
+  hw:[[-2.25,.8],[-1.8,.98],[-1.0,1.04],[0,.98],[1.0,.96],[1.6,1.0],[2.1,.9],[2.25,.78]],
+  cx0:-1.9,cx1:.7,base:.88,
+  ctop:[[-1.9,.95],[-1.6,1.15],[-1.0,1.32],[-.3,1.36],[.2,1.3],[.7,.95]],
+  cw:[[-1.9,.62],[-1.6,.74],[-1.0,.8],[-.3,.82],[.2,.78],[.7,.66]],
+  pillars:[[.5,1.05,.7,.07,.45,.75],[-1.7,1.05,.7,.1,.5,-.6]],
+  fr:{x:1.4,r:.35,w:.28},rr:{x:-1.45,r:.37,w:.34},wz:.9,spokes:5,spokeW:.07};
+PROFILES.lmp={L:2.6,
+  top:[[-2.6,.8],[-2.5,.88],[-2.0,.86],[-1.0,.8],[0,.74],[1.0,.6],[1.9,.45],[2.6,.32]],
+  bot:[[-2.6,.3],[-2.4,.2],[-2.0,.16],[2.0,.16],[2.4,.2],[2.6,.24]],
+  hw:[[-2.6,.7],[-2.0,.98],[-1.0,1.1],[0,1.12],[1.0,1.08],[1.8,1.0],[2.6,.7]],
+  cx0:-.9,cx1:.7,base:.7,
+  ctop:[[-.9,.78],[-.5,1.0],[0,1.1],[.4,1.0],[.7,.72]],
+  cw:[[-.9,.55],[-.5,.62],[0,.66],[.4,.62],[.7,.5]],
+  pillars:[[.55,.9,.5,.06,.4,.8]],
+  fr:{x:1.55,r:.36,w:.34},rr:{x:-1.6,r:.38,w:.4},wz:1.12,spokes:5,spokeW:.07};
+PROFILES.formula={L:2.8,
+  top:[[-2.8,.55],[-2.5,.7],[-1.8,.78],[-1.0,.75],[0,.7],[1.0,.52],[2.0,.38],[2.8,.28]],
+  bot:[[-2.8,.3],[-2.4,.22],[-2.0,.2],[2.0,.2],[2.4,.2],[2.8,.22]],
+  hw:[[-2.8,.12],[-2.4,.22],[-1.5,.4],[-.5,.5],[.5,.46],[1.2,.3],[2.0,.18],[2.8,.1]],
+  cx0:-.2,cx1:.5,base:.7,
+  ctop:[[-.2,.72],[0,.86],[.3,.86],[.5,.74]],
+  cw:[[-.2,.2],[0,.26],[.3,.26],[.5,.2]],
+  pillars:[],
+  fr:{x:1.9,r:.4,w:.36},rr:{x:-1.8,r:.42,w:.46},wz:1.0,spokes:6,spokeW:.07};
+const NEWT=['hatch','classic','pickup','rally','fastback','lmp','formula'];
 
 function buildCar(type,opt){
   opt=opt||{};const lite=!!opt.lite,shadow=opt.shadow!==false;
@@ -899,7 +926,7 @@ function buildCar(type,opt){
     [-.7,-.46,.46,.7].forEach(z=>add(new THREE.CylinderGeometry(.055,.055,.2,10).rotateZ(Math.PI/2),chrome,RX-.04,.32,z));
   }else if(NEWT.includes(type)){
     const W=hwF(0);
-    box(.3,.18,2*W-.25,carbon,L-.05,.36,0);box(.3,.18,2*W-.25,carbon,-L+.05,.36,0);
+    if(type!=='formula'){box(.3,.18,2*W-.25,carbon,L-.05,.36,0);box(.3,.18,2*W-.25,carbon,-L+.05,.36,0);}
     [1,-1].forEach(s=>{box(.07,.12,.4,yellow,L-.01,.66,s*W*.62);box(.06,.12,.36,red,RX,.68,s*W*.62);});
     [-.4,.4].forEach(z=>add(new THREE.CylinderGeometry(.07,.07,.2,12).rotateZ(Math.PI/2),chrome,RX-.05,.3,z));
     if(type==='hatch'){box(.34,.04,1.5,carbon,-1.85,1.42,0).rotation.z=.12;box(.5,.04,1.2,carbon,1.55,.98,0);}
@@ -936,7 +963,7 @@ function buildCar(type,opt){
     box(.06,.1,.96,grM,NZ,.37,0);[0,1].forEach(k=>box(.07,.012,.94,carbon,NZ+.005,.35+k*.04,0));
     [1,-1].forEach(s=>{box(.2,.012,.3,carbon,L-.2,.31,s*.82,-s*.15);});
   }else if(NEWT.includes(type)){
-    box(.06,.14,1.0,grM,NZ,.5,0);[0,1,2,3].forEach(k=>box(.07,.012,.98,chrome,NZ+.005,.45+k*.045,0));
+    if(type!=='formula'&&type!=='lmp'){box(.06,.14,1.0,grM,NZ,.5,0);[0,1,2,3].forEach(k=>box(.07,.012,.98,chrome,NZ+.005,.45+k*.045,0));}
   }else{
     box(.06,.08,1.14,grM,NZ,.33,0);[1,-1].forEach(s=>box(.2,.012,.34,carbon,L-.18,.28,s*.84,-s*.2));
     [1.35,1.1,.85].forEach(x=>{const m=(yTop(x+.1)-yTop(x-.1))/.2;box(.16,.01,.5,grM,x,yTop(x)+.006,0).rotation.z=Math.atan(m);});
@@ -961,6 +988,16 @@ function buildCar(type,opt){
    else if(type==='hyper'){wing(-L+.2,1.12,hw0*2,carbon,true);box(.4,.04,hw0*1.9,carbon,-L+.35,1.0,0);box(.04,.3,.05,gold,-1.2,yTop(-1.2)+.15,0);stripe(-L+.4,L-.4,0,.12,gold);[1,-1].forEach(sd=>box(.9,.04,.3,carbon,.2,.3,sd*(hw0+.04)));}
    else if(type==='wedge'){wing(-L+.15,1.05,hw0*2.1,carbon,true);[1,-1].forEach(sd=>{box(.5,.04,.4,carbon,L-.3,.3,sd*(hw0+.05));box(.4,.14,.04,carbon,L-.5,.36,sd*(hw0*.6));});box(1.0,.3,.04,carbon,-1.2,yTop(-1.2)+.15,0);stripe(-L+.4,L-.4,.28,.1,orng);stripe(-L+.4,L-.4,-.28,.1,orng);}
    else if(type==='rally'){wing(-L+.1,yTop(-L+.2)+.5,hw0*1.9,carbon,true);box(.5,.12,.5,carbon,P.cx0+1.2,P.ctop?cTop(P.cx0+1.2)+.08:1.6,0);box(.7,.1,.55,carbon,1.1,yTop(1.1)+.06,0);box(.2,.14,1.3,carbon,P.cx1-.2,cTop(P.cx1-.2)+.1,0);[-.45,-.15,.15,.45].forEach(z=>add(new THREE.CylinderGeometry(.09,.09,.1,12).rotateZ(Math.PI/2),yellow,P.cx1-.1,cTop(P.cx1-.2)+.1,z));stripe(-L+.3,L-.3,.3,.18,orng);stripe(-L+.3,L-.3,-.3,.18,orng);}
+   else if(type==='fastback'){box(.55,.07,hw0*1.7,carbon,-L+.15,yTop(-L+.25)+.08,0).rotation.z=.12;[1,-1].forEach(sd=>{add(new THREE.CylinderGeometry(.14,.14,.14,18).rotateZ(Math.PI/2),chrome,L-.5,yTop(L-.5)+.03,sd*.68);add(new THREE.CylinderGeometry(.1,.1,.15,18).rotateZ(Math.PI/2),yellow,L-.48,yTop(L-.5)+.03,sd*.68);});box(.05,.08,2*hw0-.5,red,RX-.02,.9,0);stripe(-L+.5,L-.5,0,.14,white);}
+   else if(type==='lmp'){for(let x=-2.5;x<-1.0;x+=.15){const h=.2+(-1.0-x)/1.5*.55;box(.16,h,.05,paint,x,yTop(x)+h/2,0);}box(.5,.05,hw0*1.7,carbon,-2.5,yTop(-2.5)+.78,0);box(.5,.04,hw0*2,carbon,L-.1,.2,0);[1,-1].forEach(sd=>{box(.06,.06,.5,yellow,L-.3,.46,sd*.55);box(.5,.12,.04,carbon,L-.1,.26,sd*hw0);});stripe(-.9,L-.3,0,.28,white);}
+   else if(type==='formula'){const dk=carbon;
+     box(.5,.04,2.2,dk,L-.15,.24,0);[1,-1].forEach(sd=>{box(.6,.2,.04,dk,L-.15,.3,sd*1.1);box(.9,.3,.45,paint,-.2,.52,sd*.62);box(.5,.06,.5,dk,-.2,.34,sd*.62);});
+     box(.7,.04,1.5,dk,-L+.1,1.12,0);box(.04,.04,.04,dk,0,0,0);[1,-1].forEach(sd=>{box(.7,.28,.04,dk,-L+.1,1.0,sd*.76);box(.1,.7,.06,dk,-L+.35,.75,sd*.1);});
+     box(.5,.4,.3,paint,-.35,.98,0);
+     add(new THREE.SphereGeometry(.17,14,10),white,-.05,.9,0);
+     const halo=add(new THREE.TorusGeometry(.34,.022,8,24,Math.PI),dk,.15,.76,0);halo.scale.x=1.2;box(.05,.28,.05,dk,.5,.84,0);
+     [1,-1].forEach(sd=>{[.9,-1.0].forEach(x=>{box(.04,.04,1.0,dk,x,.45,sd*.62).rotation.x=sd*.0;});box(.04,.04,.9,dk,1.9,.4,sd*.5);box(.04,.04,.9,dk,-1.8,.45,sd*.62);});
+     stripe(-L+.3,L-.3,0,.12,orng);}
    else if(type==='hatch'){[1,-1].forEach(sd=>{box(2.4,.06,.03,white,0,.62,sd*(hwF(0)+.004));add(new THREE.CylinderGeometry(.09,.09,.06,14).rotateZ(Math.PI/2),yellow,L-.04,.4,sd*.7);});}
    else if(type==='pickup'){box(.3,.12,1.5,carbon,.65,cTop(.65)+.09,0);[-.6,-.2,.2,.6].forEach(z=>add(new THREE.CylinderGeometry(.1,.1,.12,12).rotateZ(Math.PI/2),yellow,1.0,cTop(1.0)+.1,z));[1,-1].forEach(sd=>add(new THREE.CylinderGeometry(.04,.04,.7,8),chrome,L+.12,.62,sd*.55));box(.05,.05,2*hw0-.2,chrome,L+.12,.92,0);box(.05,.5,.05,chrome,L+.12,.7,0);}
    else if(type==='sedan'){[1,-1].forEach(sd=>box(3.1,.025,.025,chrome,-.1,P.base+.01,sd*(cW(0)+.01)));stripe(-L+.8,-L+1.4,0,.5,carbon);}
@@ -1023,7 +1060,7 @@ function place(i){const f=frameAt(i);S.x=f.x;S.z=f.z;S.h=f.h;S.vx=S.vz=0;S.idx=i
 place(START);
 
 /* ---------- cars, styles ---------- */
-const MODELS=['coupe','sedan','gt','sport','hyper','muscle','rally','wedge','hatch','classic','pickup'];
+const MODELS=['coupe','sedan','gt','sport','hyper','muscle','rally','wedge','hatch','classic','pickup','fastback','lmp','formula'];
 const SPEC={
  coupe:{name:'Night Coupe',cls:'Sport coupe',desc:'Low, sharp and quick to turn in. Our signature car with the yellow light strips.',top:300,acc:10.8,grip:6.8,steer:2.0,stats:[88,90,86,84]},
  sedan:{name:'Apex Sedan',cls:'Sport sedan',desc:'Longer and calmer. Very stable in fast corners and easy to control, a good first pick.',top:285,acc:10.2,grip:7.5,steer:1.9,stats:[84,84,95,70]},
@@ -1035,6 +1072,9 @@ const SPEC={
  hatch:{name:'Street Hatch',cls:'Hot hatch',desc:'Short, tall and cheeky. Grippy and easy to throw into corners. Free for every driver.',top:290,acc:10.0,grip:7.6,steer:2.15,stats:[80,82,92,78]},
  classic:{name:'Classic 69',cls:'Premium classic',desc:'A long-nosed vintage muscle car with loud power and a wild tail.',top:310,acc:11.0,grip:6.2,steer:1.9,stats:[90,92,74,98],prem:true,cost:350},
  pickup:{name:'Raptor 4x4',cls:'Premium truck',desc:'A lifted pickup with a load bed, huge tyres and monster grip.',top:295,acc:11.6,grip:7.4,steer:1.85,stats:[84,95,88,85],prem:true,cost:500},
+ fastback:{name:'Rennsport R',cls:'Premium sports',desc:'A rear-engine fastback with round lamps and a duck-tail. Balanced and very quick.',top:335,acc:12.2,grip:7.0,steer:2.2,stats:[97,96,92,90],prem:true,cost:700},
+ lmp:{name:'Le Mans LMP',cls:'Premium prototype',desc:'A wide endurance prototype with a tall tail fin. Planted at very high speed.',top:350,acc:12.8,grip:7.6,steer:2.2,stats:[99,98,95,88],prem:true,cost:1000},
+ formula:{name:'Formula Z',cls:'Premium open-wheel',desc:'An open-wheel racer with front and rear wings, a halo and huge downforce.',top:380,acc:13.5,grip:8.4,steer:2.4,stats:[100,100,100,72],prem:true,cost:1500},
  wedge:{name:'Apex Vector',cls:'Premium supercar',desc:'A razor-flat wedge supercar. The quickest and sharpest car in the game.',top:360,acc:12.8,grip:6.6,steer:2.3,stats:[100,100,92,96],prem:true,cost:800}
 };
 const WAL=(()=>{const o={cards:0,owned:['coupe','sedan','gt','sport','hatch'],mods:{},ex:{}};try{const j=JSON.parse(localStorage.getItem('adrive_wallet')||'null');if(j&&Number.isFinite(j.cards)){o.cards=Math.max(0,j.cards|0);if(j.mods&&typeof j.mods==='object')for(const k in j.mods)if(MODELS.includes(k)&&Array.isArray(j.mods[k]))o.mods[k]=[0,1,2].map(i=>Math.max(0,Math.min(3,j.mods[k][i]|0)));if(j.ex&&typeof j.ex==='object')for(const k in j.ex)if(MODELS.includes(k))o.ex[k]={spoiler:!!j.ex[k].spoiler,glow:!!j.ex[k].glow};if(Array.isArray(j.owned))j.owned.forEach(k=>{if(MODELS.includes(k)&&!o.owned.includes(k))o.owned.push(k);});}}catch(e){}return o;})();
@@ -1050,7 +1090,7 @@ const CARS={};MODELS.forEach(k=>{const c=buildCar(k,{});c.root.visible=false;sce
 const PAINTS=[['Gloss Black',0x0f1013],['Midnight Blue',0x0b1a4a],['Pearl White',0xe8e8e4],['Signal Red',0x9e1119],['Slate Grey',0x474c55],['Racing Green',0x0b3a2a],['Sunset Orange',0xd9531e],['Electric Blue',0x1666ff],['Violet',0x5a2bd0],['Desert Sand',0xc2a878],['Lime Rush',0x6fd400],['Hot Pink',0xff2f9a],['Lemon',0xffd400],['Cyan Flash',0x00c8ff]];
 const FINISH=['Gloss','Matte','Metallic'];
 const LAMPS=[['Yellow',0xffd400],['White',0xfff4e0],['Ice Blue',0x66d8ff],['Red',0xff3030],['Green',0x6dff6d]];
-const sel={car:0,paint:0,fin:0,lamp:0,pi:{coupe:6,sedan:7,gt:8,sport:12,hyper:11,muscle:10,rally:13,wedge:11,hatch:12,classic:5,pickup:4}};
+const sel={car:0,paint:0,fin:0,lamp:0,pi:{coupe:6,sedan:7,gt:8,sport:12,hyper:11,muscle:10,rally:13,wedge:11,hatch:12,classic:5,pickup:4,fastback:3,lmp:2,formula:3}};
 try{const j=JSON.parse(localStorage.getItem('adrive_sel2')||'{}');for(const k in sel)if(Number.isInteger(j[k]))sel[k]=j[k];if(j.pi&&typeof j.pi==='object')for(const k in sel.pi)if(Number.isInteger(j.pi[k]))sel.pi[k]=j.pi[k];}catch(e){}
 sel.car=Math.max(0,Math.min(MODELS.length-1,sel.car));MODELS.forEach(k=>{sel.pi[k]=Math.max(0,Math.min(PAINTS.length-1,sel.pi[k]|0));});sel.fin=Math.max(0,Math.min(2,sel.fin));sel.lamp=Math.max(0,Math.min(LAMPS.length-1,sel.lamp));
 let car=CARS[MODELS[sel.car]],CAR=carSpec(MODELS[sel.car]),brakeMat=car.brakeMat;car.root.visible=true;
